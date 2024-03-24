@@ -12,11 +12,14 @@ export class NovaGame extends Game {
       scale: {
         mode: Phaser.Scale.FIT,
       },
+      audio: {
+        context: new AudioContext(),
+      },
       physics: {
         default: "arcade",
         arcade: {
-        //   debug: false,
-            debug: true,
+          debug: false,
+          // debug: true,
           gravity: { x: 0, y: 0 },
         },
       },

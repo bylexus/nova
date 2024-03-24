@@ -18,21 +18,22 @@ export default class BottomLeftMirror extends Block {
   }
 
   protected overlapLaserCallback(laser: Laser) {
+    // in any case, the active laser stops here: we deactivate it first:
+    laser.setActive(false);
+
     if (laser instanceof VLaser) {
       // vertical lasers can only pass if coming from bottom (heading up):
       if (laser.direction === LaserDirection.UP) {
-        this.emit(EVENTS.dirChange, LaserDirection.LEFT, this);
+        this.emit(EVENTS.dirChange, LaserDirection.LEFT, this, laser);
       } else {
-        laser.setActive(false);
-        this.emit(EVENTS.blockHit, this);
+        this.emit(EVENTS.blockHit, this, laser);
       }
     } else if (laser instanceof HLaser) {
       // horizontal lasers can only pass if coming from left (heading right):
       if (laser.direction === LaserDirection.RIGHT) {
-        this.emit(EVENTS.dirChange, LaserDirection.DOWN, this);
+        this.emit(EVENTS.dirChange, LaserDirection.DOWN, this, laser);
       } else {
-        laser.setActive(false);
-        this.emit(EVENTS.blockHit, this);
+        this.emit(EVENTS.blockHit, this, laser);
       }
     }
   }

@@ -1,3 +1,5 @@
+import { LASER_GROW_SPEED } from "../Constants";
+
 export enum LaserDirection {
   UP = "up",
   DOWN = "down",
@@ -24,4 +26,13 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
 
   public abstract grow(amount: number): void;
   public abstract get direction(): LaserDirection;
+
+  protected preUpdate(time: number, delta: number) {
+    if (!this.active) {
+      return;
+    }
+
+    let grow = (LASER_GROW_SPEED * delta) / 1000;
+    this.grow(grow);
+  }
 }
