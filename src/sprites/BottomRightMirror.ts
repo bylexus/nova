@@ -24,16 +24,16 @@ export default class BottomRightMirror extends Block {
     if (laser instanceof VLaser) {
       // vertical lasers can only pass if coming from bottom (heading up):
       if (laser.direction === LaserDirection.UP) {
-        this.emit(EVENTS.dirChange, LaserDirection.RIGHT, this, laser);
+        this.scene.events.emit(EVENTS.dirChange, LaserDirection.RIGHT, this, laser);
       } else {
-        this.emit(EVENTS.blockHit, this, laser);
+        this.scene.events.emit(EVENTS.blockHit, this, laser);
       }
     } else if (laser instanceof HLaser) {
       // horizontal lasers can only pass if coming from right (heading left):
       if (laser.direction === LaserDirection.LEFT) {
-        this.emit(EVENTS.dirChange, LaserDirection.DOWN, this, laser);
+        this.scene.events.emit(EVENTS.dirChange, LaserDirection.DOWN, this, laser);
       } else {
-        this.emit(EVENTS.blockHit, this, laser);
+        this.scene.events.emit(EVENTS.blockHit, this, laser);
       }
     }
   }

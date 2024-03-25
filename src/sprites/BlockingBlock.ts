@@ -10,7 +10,7 @@ export default class BlockingBlock extends Block {
   protected overlapLaserCallback(laser: Laser) {
     if (laser instanceof Laser) {
       laser.setActive(false);
-      this.emit(EVENTS.blockHit, this, laser);
+      this.scene.events.emit(EVENTS.blockHit, this, laser);
     }
   }
 }

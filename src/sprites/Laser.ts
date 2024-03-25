@@ -67,7 +67,7 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
   protected overlapLaserCallback(laser: Laser) {
     console.log("Collided into other laser", laser.active);
     this.setActive(false);
-    this.emit(EVENTS.blockHit, this, laser);
+    this.scene.events.emit(EVENTS.blockHit, this, laser);
   }
 
   public addSeenLaser(laser: Laser) {

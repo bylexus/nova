@@ -13,6 +13,7 @@ import Block from "../sprites/Block";
 export class TestScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
   private blocks: Phaser.GameObjects.Group | null = null;
+  private gameField: Phaser.GameObjects.Container | null = null;
 
   preload() {
     Object.values(GAME_ASSETS).forEach((value) => {
@@ -26,58 +27,44 @@ export class TestScene extends Scene {
     this.lasers = this.add.group();
     this.blocks = this.add.group();
 
+    this.events.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
+      console.log("SCENE: laser collides and stops:", block);
+    });
+    this.events.addListener(
+      EVENTS.dirChange,
+      this.laserDirChangedEvent.bind(this)
+    );
+
     // Test Group 1
     (() => {
       // tl
       const tl = new TopLeftMirror(this, TILE_SIZE * 5, TILE_SIZE * 5);
       tl.configureLaserCollider(this.lasers);
-      tl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      tl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tl);
 
       // br
       const br = new BottomRightMirror(this, TILE_SIZE * 5, TILE_SIZE * 2);
       br.configureLaserCollider(this.lasers);
-      br.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      br.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(br);
 
       // bl
       const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 2);
       bl.configureLaserCollider(this.lasers);
-      bl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      bl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(bl);
 
       // tr
       const tr = new TopRightMirror(this, TILE_SIZE * 8, TILE_SIZE * 5);
       tr.configureLaserCollider(this.lasers);
-      tr.addListener(EVENTS.blockHit, (block: Block) => {
-        console.log("laser collides and stops:", block);
-      });
-      tr.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tr);
 
       // block
       const block = new BlockingBlock(this, TILE_SIZE * 12, TILE_SIZE * 5);
       block.configureLaserCollider(this.lasers);
-      block.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
       this.blocks.add(block);
 
       // block 2
       const block2 = new BlockingBlock(this, TILE_SIZE * 2, TILE_SIZE * 5);
       block2.configureLaserCollider(this.lasers);
-      block2.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
       this.blocks.add(block2);
 
       // coming from left:
@@ -96,61 +83,34 @@ export class TestScene extends Scene {
       // tl
       const tl = new TopLeftMirror(this, TILE_SIZE * 5, TILE_SIZE * 10);
       tl.configureLaserCollider(this.lasers);
-      tl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      tl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tl);
 
       // br
       const br = new BottomRightMirror(this, TILE_SIZE * 5, TILE_SIZE * 7);
       br.configureLaserCollider(this.lasers);
-      br.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      br.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(br);
 
       // bl
       const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 7);
       bl.configureLaserCollider(this.lasers);
-      bl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      bl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(bl);
 
       // tr
       const tr = new TopRightMirror(this, TILE_SIZE * 8, TILE_SIZE * 10);
       tr.configureLaserCollider(this.lasers);
-      tr.addListener(EVENTS.blockHit, (block: Block) => {
-        console.log("laser collides and stops:", block);
-      });
-      tr.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tr);
 
       // block
       const block = new BlockingBlock(this, TILE_SIZE * 17, TILE_SIZE * 10);
       block.configureLaserCollider(this.lasers);
-      block.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
       this.blocks.add(block);
 
       const c1 = new TopRightMirror(this, TILE_SIZE * 2, TILE_SIZE * 10);
       c1.configureLaserCollider(this.lasers);
-      c1.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      c1.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(c1);
 
       const c2 = new BottomRightMirror(this, TILE_SIZE * 2, TILE_SIZE * 8);
       c2.configureLaserCollider(this.lasers);
-      c2.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-        console.log("laser collides and stops:", block);
-      });
-      c2.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(c2);
 
       // coming from right:
@@ -164,7 +124,7 @@ export class TestScene extends Scene {
       this.lasers.add(actLaser);
     })();
 
-	// 2 lasers pointing at each other:
+    // 2 lasers pointing at each other:
     (() => {
       // coming from right:
       const rl = new HLaser(
@@ -179,7 +139,7 @@ export class TestScene extends Scene {
       // coming from left:
       const ll = new HLaser(
         this,
-		5 * TILE_SIZE,
+        5 * TILE_SIZE,
         TILE_SIZE * 12,
         LaserDirection.RIGHT
       );
