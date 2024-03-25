@@ -1,4 +1,5 @@
 export const TILE_SIZE = 48;
+export const LASER_WIDTH = 5;
 export const LASER_GROW_SPEED = 150; // as in 150 px per second
 
 export const GAME_ASSETS = {

@@ -1,5 +1,5 @@
 import { Game } from "phaser";
-import { MainScene } from "./scenes/MainScene";
+import { TestScene } from "./scenes/TestScene";
 
 export class NovaGame extends Game {
   constructor() {
@@ -8,18 +8,18 @@ export class NovaGame extends Game {
       height: 768,
       type: Phaser.AUTO,
       title: "Nova",
-      scene: MainScene,
+      scene: TestScene,
       scale: {
         mode: Phaser.Scale.FIT,
       },
       audio: {
-        context: new AudioContext(),
+        // context: new AudioContext(),
       },
       physics: {
         default: "arcade",
         arcade: {
           debug: false,
-          // debug: true,
+        //   debug: true,
           gravity: { x: 0, y: 0 },
         },
       },

@@ -10,7 +10,7 @@ import TopRightMirror from "../sprites/TopRightMirror";
 import BlockingBlock from "../sprites/BlockingBlock";
 import Block from "../sprites/Block";
 
-export class MainScene extends Scene {
+export class TestScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
   private blocks: Phaser.GameObjects.Group | null = null;
 
@@ -34,12 +34,7 @@ export class MainScene extends Scene {
       tl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
         console.log("laser collides and stops:", block);
       });
-      tl.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      tl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tl);
 
       // br
@@ -48,12 +43,7 @@ export class MainScene extends Scene {
       br.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
         console.log("laser collides and stops:", block);
       });
-      br.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      br.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(br);
 
       // bl
@@ -62,12 +52,7 @@ export class MainScene extends Scene {
       bl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
         console.log("laser collides and stops:", block);
       });
-      bl.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      bl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(bl);
 
       // tr
@@ -76,12 +61,7 @@ export class MainScene extends Scene {
       tr.addListener(EVENTS.blockHit, (block: Block) => {
         console.log("laser collides and stops:", block);
       });
-      tr.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      tr.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tr);
 
       // block
@@ -107,6 +87,7 @@ export class MainScene extends Scene {
         TILE_SIZE * 5,
         LaserDirection.RIGHT
       );
+      actLaser.configureLaserCollider(this.lasers!);
       this.lasers.add(actLaser);
     })();
 
@@ -118,12 +99,7 @@ export class MainScene extends Scene {
       tl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
         console.log("laser collides and stops:", block);
       });
-      tl.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      tl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tl);
 
       // br
@@ -132,12 +108,7 @@ export class MainScene extends Scene {
       br.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
         console.log("laser collides and stops:", block);
       });
-      br.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      br.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(br);
 
       // bl
@@ -146,12 +117,7 @@ export class MainScene extends Scene {
       bl.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
         console.log("laser collides and stops:", block);
       });
-      bl.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      bl.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(bl);
 
       // tr
@@ -160,12 +126,7 @@ export class MainScene extends Scene {
       tr.addListener(EVENTS.blockHit, (block: Block) => {
         console.log("laser collides and stops:", block);
       });
-      tr.addListener(
-        EVENTS.dirChange,
-        (newDir: LaserDirection, block: Block, laser: Laser) => {
-          this.laserDirChanged(laser, newDir, block);
-        }
-      );
+      tr.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
       this.blocks.add(tr);
 
       // block
@@ -176,13 +137,21 @@ export class MainScene extends Scene {
       });
       this.blocks.add(block);
 
-      // block 2
-      const block2 = new BlockingBlock(this, TILE_SIZE * 2, TILE_SIZE * 10);
-      block2.configureLaserCollider(this.lasers);
-      block2.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
+      const c1 = new TopRightMirror(this, TILE_SIZE * 2, TILE_SIZE * 10);
+      c1.configureLaserCollider(this.lasers);
+      c1.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
         console.log("laser collides and stops:", block);
       });
-      this.blocks.add(block2);
+      c1.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
+      this.blocks.add(c1);
+
+      const c2 = new BottomRightMirror(this, TILE_SIZE * 2, TILE_SIZE * 8);
+      c2.configureLaserCollider(this.lasers);
+      c2.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
+        console.log("laser collides and stops:", block);
+      });
+      c2.addListener(EVENTS.dirChange, this.laserDirChangedEvent.bind(this));
+      this.blocks.add(c2);
 
       // coming from right:
       const actLaser = new HLaser(
@@ -191,11 +160,43 @@ export class MainScene extends Scene {
         TILE_SIZE * 10,
         LaserDirection.LEFT
       );
+      actLaser.configureLaserCollider(this.lasers!);
       this.lasers.add(actLaser);
+    })();
+
+	// 2 lasers pointing at each other:
+    (() => {
+      // coming from right:
+      const rl = new HLaser(
+        this,
+        15 * TILE_SIZE,
+        TILE_SIZE * 12,
+        LaserDirection.LEFT
+      );
+      rl.configureLaserCollider(this.lasers!);
+      this.lasers.add(rl);
+
+      // coming from left:
+      const ll = new HLaser(
+        this,
+		5 * TILE_SIZE,
+        TILE_SIZE * 12,
+        LaserDirection.RIGHT
+      );
+      ll.configureLaserCollider(this.lasers!);
+      this.lasers.add(ll);
     })();
   }
 
   update(time: number, delta: number): void {}
+
+  laserDirChangedEvent(
+    newDir: LaserDirection,
+    block: Block,
+    laser: Laser
+  ): void {
+    this.laserDirChanged(laser, newDir, block);
+  }
 
   laserDirChanged(
     actLaser: Laser,
@@ -233,8 +234,15 @@ export class MainScene extends Scene {
         y = oldLaser.y + oldLaser.height;
         break;
     }
+    oldLaser.setActive(false);
+    // important: remove collider on now inactive laser:
+    // only the head laser should have a collider:
+    oldLaser.removeLaserCollider();
 
     let newLaser: Laser;
+    // snap new laser to grid:
+    x = Math.round(x / TILE_SIZE) * TILE_SIZE;
+    y = Math.round(y / TILE_SIZE) * TILE_SIZE;
     switch (newDir) {
       case LaserDirection.LEFT:
         newLaser = new HLaser(this, x, y, LaserDirection.LEFT);
@@ -249,6 +257,10 @@ export class MainScene extends Scene {
         newLaser = new VLaser(this, x, y, LaserDirection.DOWN);
         break;
     }
+    // newLaser.configureLaserCollider(this.lasers!);
+    // oldLaser.addSeenLaser(newLaser);
+    newLaser.addSeenLaser(oldLaser);
+    newLaser.configureLaserCollider(this.lasers!);
     return newLaser;
   }
 }
