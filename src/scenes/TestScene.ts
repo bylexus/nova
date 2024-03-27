@@ -13,7 +13,6 @@ import Block from "../sprites/Block";
 export class TestScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
   private blocks: Phaser.GameObjects.Group | null = null;
-  private gameField: Phaser.GameObjects.Container | null = null;
 
   preload() {
     Object.values(GAME_ASSETS).forEach((value) => {
@@ -29,10 +28,19 @@ export class TestScene extends Scene {
 
     this.events.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
       console.log("SCENE: laser collides and stops:", block);
+      laser.setActive(false);
     });
     this.events.addListener(
       EVENTS.dirChange,
       this.laserDirChangedEvent.bind(this)
+    );
+    this.events.addListener(
+      EVENTS.laserHit,
+      (otherLaser: Laser, thisLaser: Laser) => {
+        console.log("SCENE: laser collides into other laser:");
+        otherLaser.setActive(false);
+        thisLaser.setActive(false);
+      }
     );
 
     // Test Group 1
@@ -155,6 +163,7 @@ export class TestScene extends Scene {
     block: Block,
     laser: Laser
   ): void {
+    laser.setActive(false);
     this.laserDirChanged(laser, newDir, block);
   }
 
@@ -164,7 +173,7 @@ export class TestScene extends Scene {
     sourceBlock: Block | null
   ) {
     console.log("laser changes dir to:", newDir);
-    let newLaserPart = this.continueLaser(actLaser, newDir);
+    let newLaserPart = this.turnLaser(actLaser, newDir);
     if (newLaserPart) {
       // The new laser is positioned so that it is in the collission zone
       // of the block that caused a new laser piece: so we
@@ -177,7 +186,16 @@ export class TestScene extends Scene {
     }
   }
 
-  continueLaser(oldLaser: Laser, newDir: LaserDirection): Laser | null {
+  /**
+   * This method is called when a laser bumps into a direction changing
+   * mirror. It ends here, and emits a new laser in the new (given)
+   * direction
+   * 
+   * @param oldLaser 
+   * @param newDir 
+   * @returns 
+   */
+  turnLaser(oldLaser: Laser, newDir: LaserDirection): Laser | null {
     let x: number = oldLaser.x,
       y: number = oldLaser.y;
     switch (oldLaser.direction) {
@@ -217,9 +235,13 @@ export class TestScene extends Scene {
         newLaser = new VLaser(this, x, y, LaserDirection.DOWN);
         break;
     }
-    // newLaser.configureLaserCollider(this.lasers!);
-    // oldLaser.addSeenLaser(newLaser);
+    
+    // The new laser marks the old/source laser as 'seen', so that
+    // no overlap collision is detected: The new laser touches the
+    // old laser, as it starts at the end point of the old laser:
     newLaser.addSeenLaser(oldLaser);
+    // ... and we attach a laser collider to the new laser to detect
+    // when other lasers bump into it:
     newLaser.configureLaserCollider(this.lasers!);
     return newLaser;
   }

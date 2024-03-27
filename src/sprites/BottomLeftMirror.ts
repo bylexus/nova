@@ -18,9 +18,6 @@ export default class BottomLeftMirror extends Block {
   }
 
   protected overlapLaserCallback(laser: Laser) {
-    // in any case, the active laser stops here: we deactivate it first:
-    laser.setActive(false);
-
     if (laser instanceof VLaser) {
       // vertical lasers can only pass if coming from bottom (heading up):
       if (laser.direction === LaserDirection.UP) {

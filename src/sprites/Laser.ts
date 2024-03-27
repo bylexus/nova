@@ -62,12 +62,11 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
    * and the laser is marked as "already seen". So the overlapLaserCallback is
    * only executed once per laser.
    *
-   * @param laser The laser that enters this block's collider zone
+   * @param otherLaser The other laser that enters this block's collider zone
    */
-  protected overlapLaserCallback(laser: Laser) {
-    console.log("Collided into other laser", laser.active);
-    this.setActive(false);
-    this.scene.events.emit(EVENTS.blockHit, this, laser);
+  protected overlapLaserCallback(otherLaser: Laser) {
+    console.log("Collided into other laser");
+    this.scene.events.emit(EVENTS.laserHit, otherLaser, this);
   }
 
   public addSeenLaser(laser: Laser) {
