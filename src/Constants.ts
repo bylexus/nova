@@ -15,6 +15,7 @@ export const GAME_ASSETS = {
 
 export const EVENTS = {
   blockHit: Symbol("blockHit"),
+  mirrorBallHit: Symbol("mirrorBallHit"),
   laserHit: Symbol("laserHit"),
   dirChange: Symbol("dirChange"),
 };

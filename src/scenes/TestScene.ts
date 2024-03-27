@@ -9,6 +9,8 @@ import BottomLeftMirror from "../sprites/BottomLeftMirror";
 import TopRightMirror from "../sprites/TopRightMirror";
 import BlockingBlock from "../sprites/BlockingBlock";
 import Block from "../sprites/Block";
+import BallMirror from "../sprites/BallMirror";
+import { snapToGrid } from "../lib/tools";
 
 export class TestScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
@@ -35,6 +37,10 @@ export class TestScene extends Scene {
       this.laserDirChangedEvent.bind(this)
     );
     this.events.addListener(
+      EVENTS.mirrorBallHit,
+      this.mirrorBallHitEvent.bind(this)
+    );
+    this.events.addListener(
       EVENTS.laserHit,
       (otherLaser: Laser, thisLaser: Laser) => {
         console.log("SCENE: laser collides into other laser:");
@@ -45,18 +51,22 @@ export class TestScene extends Scene {
 
     // Test Group 1
     (() => {
+      const mirr1 = new BallMirror(this, TILE_SIZE * 5, TILE_SIZE * 3);
+      mirr1.configureLaserCollider(this.lasers);
+      this.blocks.add(mirr1);
+
       // tl
       const tl = new TopLeftMirror(this, TILE_SIZE * 5, TILE_SIZE * 5);
       tl.configureLaserCollider(this.lasers);
       this.blocks.add(tl);
 
       // br
-      const br = new BottomRightMirror(this, TILE_SIZE * 5, TILE_SIZE * 2);
+      const br = new BottomRightMirror(this, TILE_SIZE * 5, TILE_SIZE * 1);
       br.configureLaserCollider(this.lasers);
       this.blocks.add(br);
 
       // bl
-      const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 2);
+      const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 1);
       bl.configureLaserCollider(this.lasers);
       this.blocks.add(bl);
 
@@ -75,12 +85,12 @@ export class TestScene extends Scene {
       block2.configureLaserCollider(this.lasers);
       this.blocks.add(block2);
 
-      // coming from left:
+      // coming from right:
       const actLaser = new HLaser(
         this,
+        TILE_SIZE * 7,
         TILE_SIZE * 3,
-        TILE_SIZE * 5,
-        LaserDirection.RIGHT
+        LaserDirection.LEFT
       );
       actLaser.configureLaserCollider(this.lasers!);
       this.lasers.add(actLaser);
@@ -97,6 +107,11 @@ export class TestScene extends Scene {
       const br = new BottomRightMirror(this, TILE_SIZE * 5, TILE_SIZE * 7);
       br.configureLaserCollider(this.lasers);
       this.blocks.add(br);
+
+      // mirror ball
+      const mirr1 = new BallMirror(this, TILE_SIZE * 6, TILE_SIZE * 7);
+      mirr1.configureLaserCollider(this.lasers);
+      this.blocks.add(mirr1);
 
       // bl
       const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 7);
@@ -122,11 +137,11 @@ export class TestScene extends Scene {
       this.blocks.add(c2);
 
       // coming from right:
-      const actLaser = new HLaser(
+      const actLaser = new VLaser(
         this,
-        15 * TILE_SIZE,
-        TILE_SIZE * 10,
-        LaserDirection.LEFT
+        6 * TILE_SIZE,
+        TILE_SIZE * 9,
+        LaserDirection.UP
       );
       actLaser.configureLaserCollider(this.lasers!);
       this.lasers.add(actLaser);
@@ -167,11 +182,47 @@ export class TestScene extends Scene {
     this.laserDirChanged(laser, newDir, block);
   }
 
+  mirrorBallHitEvent(block: Block, laser: Laser): void {
+    laser.setActive(false);
+    let nl1: Laser | null = null;
+    let nl2: Laser | null = null;
+    switch (laser.direction) {
+      case LaserDirection.DOWN:
+        nl1 = this.laserDirChanged(laser, LaserDirection.LEFT, block);
+        nl1?.setY(snapToGrid(laser.y + laser.height + TILE_SIZE / 2));
+        nl2 = this.laserDirChanged(laser, LaserDirection.RIGHT, block);
+        nl2?.setY(snapToGrid(laser.y + laser.height + TILE_SIZE / 2));
+        break;
+      case LaserDirection.UP:
+        nl1 = this.laserDirChanged(laser, LaserDirection.LEFT, block);
+        nl1?.setY(snapToGrid(laser.y - laser.height - TILE_SIZE / 2));
+        nl2 = this.laserDirChanged(laser, LaserDirection.RIGHT, block);
+        nl2?.setY(snapToGrid(laser.y - laser.height - TILE_SIZE / 2));
+        break;
+      case LaserDirection.LEFT:
+        nl1 = this.laserDirChanged(laser, LaserDirection.UP, block);
+        nl1?.setX(snapToGrid(laser.x - laser.width - TILE_SIZE / 2));
+        nl2 = this.laserDirChanged(laser, LaserDirection.DOWN, block);
+        nl2?.setX(snapToGrid(laser.x - laser.width - TILE_SIZE / 2));
+        break;
+      case LaserDirection.RIGHT:
+        nl1 = this.laserDirChanged(laser, LaserDirection.UP, block);
+        nl1?.setX(snapToGrid(laser.x + laser.width + TILE_SIZE / 2));
+        nl2 = this.laserDirChanged(laser, LaserDirection.DOWN, block);
+        nl2?.setX(snapToGrid(laser.x + laser.width + TILE_SIZE / 2));
+        break;
+    }
+    if (nl1 && nl2) {
+      nl1.addSeenLaser(nl2);
+      nl2.addSeenLaser(nl1);
+    }
+  }
+
   laserDirChanged(
     actLaser: Laser,
     newDir: LaserDirection,
     sourceBlock: Block | null
-  ) {
+  ): Laser | null {
     console.log("laser changes dir to:", newDir);
     let newLaserPart = this.turnLaser(actLaser, newDir);
     if (newLaserPart) {
@@ -183,17 +234,19 @@ export class TestScene extends Scene {
         sourceBlock.addSeenLaser(newLaserPart);
       }
       this.lasers?.add(newLaserPart);
+      return newLaserPart;
     }
+    return null;
   }
 
   /**
    * This method is called when a laser bumps into a direction changing
    * mirror. It ends here, and emits a new laser in the new (given)
    * direction
-   * 
-   * @param oldLaser 
-   * @param newDir 
-   * @returns 
+   *
+   * @param oldLaser
+   * @param newDir
+   * @returns
    */
   turnLaser(oldLaser: Laser, newDir: LaserDirection): Laser | null {
     let x: number = oldLaser.x,
@@ -219,8 +272,8 @@ export class TestScene extends Scene {
 
     let newLaser: Laser;
     // snap new laser to grid:
-    x = Math.round(x / TILE_SIZE) * TILE_SIZE;
-    y = Math.round(y / TILE_SIZE) * TILE_SIZE;
+    x = snapToGrid(x);
+    y = snapToGrid(y);
     switch (newDir) {
       case LaserDirection.LEFT:
         newLaser = new HLaser(this, x, y, LaserDirection.LEFT);
@@ -235,7 +288,7 @@ export class TestScene extends Scene {
         newLaser = new VLaser(this, x, y, LaserDirection.DOWN);
         break;
     }
-    
+
     // The new laser marks the old/source laser as 'seen', so that
     // no overlap collision is detected: The new laser touches the
     // old laser, as it starts at the end point of the old laser:
