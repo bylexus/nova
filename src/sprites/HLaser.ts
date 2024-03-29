@@ -22,4 +22,14 @@ export default class HLaser extends Laser {
   public grow(amount: number): void {
     this.width += amount;
   }
+
+  public get head(): Phaser.Geom.Point {
+    if (this.direction === LaserDirection.RIGHT) {
+      // return the head x/y point of this laser when pointing right:
+      return new Phaser.Geom.Point(this.x + this.width, this.y);
+    } else {
+      // return the head x/y point of this laser when pointing left:
+      return new Phaser.Geom.Point(this.x - this.width, this.y);
+    }
+  }
 }

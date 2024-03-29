@@ -22,4 +22,14 @@ export default class VLaser extends Laser {
   public grow(amount: number): void {
     this.height += amount;
   }
+
+  public get head(): Phaser.Geom.Point {
+    if (this.direction === LaserDirection.DOWN) {
+      // return the head x/y point of this laser when pointing down:
+      return new Phaser.Geom.Point(this.x, this.y + this.height);
+    } else {
+      // return the head x/y point of this laser when pointing up:
+      return new Phaser.Geom.Point(this.x, this.y - this.height);
+    }
+  }
 }

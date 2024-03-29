@@ -11,6 +11,7 @@ export const GAME_ASSETS = {
   mirrorBR: { key: "miror-br", url: "assets/mirror-bottom-right.png" },
   mirrorBL: { key: "miror-bl", url: "assets/mirror-bottom-left.png" },
   mirrorBall: { key: "miror-ball", url: "assets/mirror-ball.png" },
+  cross: { key: "cross", url: "assets/cross.png" },
 };
 
 export const EVENTS = {

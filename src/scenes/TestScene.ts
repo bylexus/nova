@@ -11,6 +11,7 @@ import BlockingBlock from "../sprites/BlockingBlock";
 import Block from "../sprites/Block";
 import BallMirror from "../sprites/BallMirror";
 import { snapToGrid } from "../lib/tools";
+import Cross from "../sprites/Cross";
 
 export class TestScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
@@ -29,7 +30,6 @@ export class TestScene extends Scene {
     this.blocks = this.add.group();
 
     this.events.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-      console.log("SCENE: laser collides and stops:", block);
       laser.setActive(false);
     });
     this.events.addListener(
@@ -43,9 +43,15 @@ export class TestScene extends Scene {
     this.events.addListener(
       EVENTS.laserHit,
       (otherLaser: Laser, thisLaser: Laser) => {
-        console.log("SCENE: laser collides into other laser:");
-        otherLaser.setActive(false);
-        thisLaser.setActive(false);
+        // check if the overlap happened within a cross tile:
+        let head = thisLaser.head;
+        let crossBlock = this.findCrossBlockAt(head);
+        if (crossBlock) {
+          console.log("let laser pass - within cross ");
+        } else {
+          otherLaser.setActive(false);
+          thisLaser.setActive(false);
+        }
       }
     );
 
@@ -92,7 +98,7 @@ export class TestScene extends Scene {
         TILE_SIZE * 3,
         LaserDirection.LEFT
       );
-      actLaser.configureLaserCollider(this.lasers!);
+      actLaser.configureLaserCollider(this.lasers);
       this.lasers.add(actLaser);
     })();
 
@@ -112,6 +118,11 @@ export class TestScene extends Scene {
       const mirr1 = new BallMirror(this, TILE_SIZE * 6, TILE_SIZE * 7);
       mirr1.configureLaserCollider(this.lasers);
       this.blocks.add(mirr1);
+
+      // cross
+      const cross1 = new Cross(this, TILE_SIZE * 5, TILE_SIZE * 8);
+      cross1.configureLaserCollider(this.lasers);
+      this.blocks.add(cross1);
 
       // bl
       const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 7);
@@ -223,7 +234,6 @@ export class TestScene extends Scene {
     newDir: LaserDirection,
     sourceBlock: Block | null
   ): Laser | null {
-    console.log("laser changes dir to:", newDir);
     let newLaserPart = this.turnLaser(actLaser, newDir);
     if (newLaserPart) {
       // The new laser is positioned so that it is in the collission zone
@@ -297,5 +307,16 @@ export class TestScene extends Scene {
     // when other lasers bump into it:
     newLaser.configureLaserCollider(this.lasers!);
     return newLaser;
+  }
+
+  protected findCrossBlockAt(point: Phaser.Geom.Point): Block | null {
+    for (let b of this.blocks!.getChildren()) {
+      if (b instanceof Cross) {
+        if (Phaser.Geom.Rectangle.ContainsPoint(b.getBounds(), point)) {
+          return b;
+        }
+      }
+    }
+    return null;
   }
 }

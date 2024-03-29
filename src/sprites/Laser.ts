@@ -1,4 +1,5 @@
 import { EVENTS, LASER_GROW_SPEED } from "../Constants";
+import Cross from "./Cross";
 
 export enum LaserDirection {
   UP = "up",
@@ -29,6 +30,7 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
 
   public abstract grow(amount: number): void;
   public abstract get direction(): LaserDirection;
+  public abstract get head(): Phaser.Geom.Point;
 
   protected preUpdate(time: number, delta: number) {
     if (!this.active) {
@@ -40,9 +42,9 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
   }
 
   public configureLaserCollider(laserGroup: Phaser.GameObjects.Group) {
-	if (this.laserCollider) {
-		return;
-	}
+    if (this.laserCollider) {
+      return;
+    }
     this.laserCollider = this.scene.physics.add.overlap(
       laserGroup,
       this,
@@ -65,7 +67,6 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
    * @param otherLaser The other laser that enters this block's collider zone
    */
   protected overlapLaserCallback(otherLaser: Laser) {
-    console.log("Collided into other laser");
     this.scene.events.emit(EVENTS.laserHit, otherLaser, this);
   }
 
