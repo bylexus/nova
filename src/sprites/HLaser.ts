@@ -20,7 +20,7 @@ export default class HLaser extends Laser {
   }
 
   public grow(amount: number): void {
-    this.width += amount;
+    this.width += amount * this.growFactor;
   }
 
   public get head(): Phaser.Geom.Point {

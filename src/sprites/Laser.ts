@@ -1,5 +1,4 @@
 import { EVENTS, LASER_GROW_SPEED } from "../Constants";
-import Cross from "./Cross";
 
 export enum LaserDirection {
   UP = "up",
@@ -11,6 +10,7 @@ export enum LaserDirection {
 export default abstract class Laser extends Phaser.GameObjects.TileSprite {
   protected seenLasers: Set<Laser> = new Set();
   protected laserCollider: Phaser.Physics.Arcade.Collider | null = null;
+  public growFactor: number = 1;
 
   constructor(
     scene: Phaser.Scene,

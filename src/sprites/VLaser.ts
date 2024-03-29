@@ -20,7 +20,7 @@ export default class VLaser extends Laser {
   }
 
   public grow(amount: number): void {
-    this.height += amount;
+    this.height += amount * this.growFactor;
   }
 
   public get head(): Phaser.Geom.Point {

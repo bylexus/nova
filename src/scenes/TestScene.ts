@@ -12,6 +12,7 @@ import Block from "../sprites/Block";
 import BallMirror from "../sprites/BallMirror";
 import { snapToGrid } from "../lib/tools";
 import Cross from "../sprites/Cross";
+import TimedBlock from "../sprites/TimedBlock";
 
 export class TestScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
@@ -158,6 +159,17 @@ export class TestScene extends Scene {
       this.lasers.add(actLaser);
     })();
 
+    // timed blocks:
+    const t1 = new TimedBlock(this, TILE_SIZE * 6, TILE_SIZE * 12);
+    t1.configureLaserCollider(this.lasers);
+    this.blocks.add(t1);
+    const t2 = new TimedBlock(this, TILE_SIZE * 7, TILE_SIZE * 12);
+    t2.configureLaserCollider(this.lasers);
+    this.blocks.add(t2);
+    const t3 = new TimedBlock(this, TILE_SIZE * 8, TILE_SIZE * 12);
+    t3.configureLaserCollider(this.lasers);
+    this.blocks.add(t3);
+
     // 2 lasers pointing at each other:
     (() => {
       // coming from right:
@@ -173,7 +185,7 @@ export class TestScene extends Scene {
       // coming from left:
       const ll = new HLaser(
         this,
-        5 * TILE_SIZE,
+        2 * TILE_SIZE,
         TILE_SIZE * 12,
         LaserDirection.RIGHT
       );
