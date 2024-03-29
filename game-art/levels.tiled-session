@@ -1,0 +1,61 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "levels/level-00.tmx",
+    "expandedProjectPaths": [
+        "levels",
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "blocks.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "levels/level-00.tmx": {
+            "scale": 0.85,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 538.2352941176471,
+                "y": 391.764705882353
+            }
+        },
+        "levels/level-00.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "tileset.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "/Users/alex/dev/nova/game-art/levels",
+    "last.imagePath": "/Users/alex/dev/nova/game-art",
+    "map.height": 16,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.tileHeight": 48,
+    "map.tileWidth": 48,
+    "map.width": 21,
+    "openFiles": [
+        "levels/level-00.tmx"
+    ],
+    "project": "levels.tiled-project",
+    "recentFiles": [
+        "levels/level-00.tmx",
+        "tileset.tsx",
+        "blocks.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 48,
+        "width": 48
+    },
+    "tileset.type": 0
+}

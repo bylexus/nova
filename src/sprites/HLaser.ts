@@ -1,5 +1,5 @@
 import Laser, { LaserDirection } from "./Laser";
-import { TILE_SIZE, GAME_ASSETS, LASER_WIDTH } from "../Constants";
+import { TILE_SIZE, GAME_ASSETS, LASER_WIDTH, GAME_IMAGES } from "../Constants";
 
 export default class HLaser extends Laser {
   private _direction: LaserDirection.LEFT | LaserDirection.RIGHT;
@@ -10,7 +10,7 @@ export default class HLaser extends Laser {
     y: number,
     direction: LaserDirection.LEFT | LaserDirection.RIGHT
   ) {
-    super(scene, x, y, 1, LASER_WIDTH, GAME_ASSETS.laserH.key);
+    super(scene, x, y, 1, LASER_WIDTH, GAME_IMAGES.laserH.key);
     this.setOrigin(direction === LaserDirection.RIGHT ? 0 : 1, 0.5);
     this._direction = direction;
   }

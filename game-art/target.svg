@@ -2,16 +2,16 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="80.456558mm"
-   height="80.456558mm"
-   viewBox="0 0 80.456558 80.456558"
+   width="75.844872mm"
+   height="75.844864mm"
+   viewBox="0 0 75.844872 75.844864"
    version="1.1"
    id="svg1"
    inkscape:version="1.3.2 (091e20e, 2023-11-25)"
-   sodipodi:docname="timeblock.svg"
-   inkscape:export-filename="../public/assets/timeblock.png"
-   inkscape:export-xdpi="15.153519"
-   inkscape:export-ydpi="15.153519"
+   sodipodi:docname="target.svg"
+   inkscape:export-filename="target.png"
+   inkscape:export-xdpi="16.074917"
+   inkscape:export-ydpi="16.074917"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -26,13 +26,14 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     inkscape:zoom="0.61439605"
-     inkscape:cx="54.52509"
-     inkscape:cy="305.99155"
+     showgrid="false"
+     inkscape:zoom="0.74653479"
+     inkscape:cx="257.85804"
+     inkscape:cy="199.58882"
      inkscape:window-width="1728"
      inkscape:window-height="1051"
-     inkscape:window-x="2144"
-     inkscape:window-y="193"
+     inkscape:window-x="0"
+     inkscape:window-y="38"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
@@ -41,13 +42,16 @@
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-48.69882,-82.288721)">
-    <rect
-       style="fill:#23c62b;fill-opacity:0.501144;stroke:#007500;stroke-width:4.23333;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+     transform="translate(-36.859188,-95.692123)">
+    <path
+       id="path1"
+       style="fill:#2362c6;fill-opacity:0.691076;stroke-width:2.11667;stroke-linecap:round"
+       d="M 36.859188,95.692123 H 112.70406 V 171.53699 H 36.859188 Z"
+       sodipodi:nodetypes="ccccc" />
+    <path
        id="rect1"
-       width="76.223228"
-       height="76.223228"
-       x="50.815487"
-       y="84.405388" />
+       style="fill:#23c62b;stroke-width:2.11667;stroke-linecap:round"
+       d="M 36.859188,95.692123 74.781624,120.50119 112.70406,95.692123 V 171.53699 H 36.859188 Z"
+       sodipodi:nodetypes="cccccc" />
   </g>
 </svg>

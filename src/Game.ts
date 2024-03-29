@@ -19,7 +19,7 @@ export class NovaGame extends Game {
         default: "arcade",
         arcade: {
           debug: false,
-        //   debug: true,
+          // debug: true,
           gravity: { x: 0, y: 0 },
         },
       },

@@ -1,4 +1,4 @@
-import { EVENTS, GAME_ASSETS } from "../Constants";
+import { EVENTS, GAME_SPRITESHEETS } from "../Constants";
 import Block from "./Block";
 import HLaser from "./HLaser";
 import Laser, { LaserDirection } from "./Laser";
@@ -6,7 +6,7 @@ import VLaser from "./VLaser";
 
 export default class BottomRightMirror extends Block {
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, GAME_ASSETS.mirrorBR.key);
+    super(scene, x, y, GAME_SPRITESHEETS.spritesheet.key, 4);
 
     // physics body is half the size of the sprite, to collide ad the center of the triangle's
     // hypotheneus
@@ -21,14 +21,24 @@ export default class BottomRightMirror extends Block {
     if (laser instanceof VLaser) {
       // vertical lasers can only pass if coming from bottom (heading up):
       if (laser.direction === LaserDirection.UP) {
-        this.scene.events.emit(EVENTS.dirChange, LaserDirection.RIGHT, this, laser);
+        this.scene.events.emit(
+          EVENTS.dirChange,
+          LaserDirection.RIGHT,
+          this,
+          laser
+        );
       } else {
         this.scene.events.emit(EVENTS.blockHit, this, laser);
       }
     } else if (laser instanceof HLaser) {
       // horizontal lasers can only pass if coming from right (heading left):
       if (laser.direction === LaserDirection.LEFT) {
-        this.scene.events.emit(EVENTS.dirChange, LaserDirection.DOWN, this, laser);
+        this.scene.events.emit(
+          EVENTS.dirChange,
+          LaserDirection.DOWN,
+          this,
+          laser
+        );
       } else {
         this.scene.events.emit(EVENTS.blockHit, this, laser);
       }
