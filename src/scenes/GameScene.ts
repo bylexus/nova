@@ -33,7 +33,53 @@ export class GameScene extends Scene {
   private blockCounter: AvailableTilesCounter | null = null;
   private state: "stopped" | "running" | "pause" = "stopped";
 
+  constructor() {
+    super("GameScene");
+  }
+
+  init() {
+    // Reset all previously added assets, listeners et al,
+    // to really remove everything from this scene and start from scratch
+    console.log("GameScene init");
+    this.events.removeListener(EVENTS.blockHit);
+    this.events.removeListener(EVENTS.dirChange);
+    this.events.removeListener(EVENTS.laserHit);
+    this.events.removeListener(EVENTS.mirrorBallHit);
+    this.events.removeListener(EVENTS.targetReached);
+    this.events.removeListener(EVENTS.tileSelected);
+
+    if (this.lasers) {
+      this.lasers.destroy(true, true);
+      this.lasers = null;
+    }
+    if (this.blocks) {
+      this.blocks.destroy(true, true);
+      this.blocks = null;
+    }
+    if (this.selectOverlay) {
+      this.selectOverlay.destroy(true, true);
+      this.selectOverlay = null;
+    }
+    if (this.laserLayer) {
+      this.laserLayer.destroy(true);
+      this.laserLayer = null;
+    }
+    if (this.blockLayer) {
+      this.blockLayer.destroy(true);
+      this.blockLayer = null;
+    }
+    if (this.uiLayer) {
+      this.uiLayer.destroy(true);
+      this.uiLayer = null;
+    }
+    if (this.blockCounter) {
+      this.blockCounter = null;
+    }
+    this.state = "stopped";
+  }
+
   preload() {
+    console.log("Preloading Game Assets");
     Object.values(GAME_IMAGES).forEach((value) => {
       this.load.image(value.key, value.url);
     });
@@ -49,6 +95,8 @@ export class GameScene extends Scene {
   }
 
   create() {
+    // this.events.removeAllListeners();
+
     console.log("Main scene created");
 
     const map = this.make.tilemap({ key: GAME_TILEMAPS.level00.key });
@@ -81,11 +129,14 @@ export class GameScene extends Scene {
     this.events.addListener(
       EVENTS.laserHit,
       (otherLaser: Laser, thisLaser: Laser) => {
+        console.log("Laser hit laser");
         // check if the overlap happened within a cross tile:
         let head = thisLaser.head;
         let crossBlock = this.findCrossBlockAt(head);
         if (crossBlock) {
+          console.log('yes, cross');
         } else {
+          console.log('no cross');
           otherLaser.setActive(false);
           thisLaser.setActive(false);
           this.checkGameEnd();
@@ -101,6 +152,8 @@ export class GameScene extends Scene {
     this.events.addListener(EVENTS.tileSelected, (type: string) => {
       console.log("Tile selected: " + type);
     });
+
+    this.state = "stopped";
   }
 
   laserDirChangedEvent(
@@ -261,6 +314,20 @@ export class GameScene extends Scene {
     startBtn.on(Phaser.Input.Events.POINTER_OUT, () => startBtn.setAlpha(0.5));
     startBtn.on(Phaser.Input.Events.POINTER_UP, () => this.startLasers());
     this.uiLayer!.add(startBtn);
+
+    // add reset btn:
+    const resetBtn = this.add.sprite(
+      this.cameras.default.width - 2 * TILE_SIZE - 5 - 5,
+      TILE_SIZE / 2,
+      GAME_IMAGES.resetBtn.key
+    );
+    resetBtn.setInteractive();
+    resetBtn.setAlpha(0.5);
+    resetBtn.on(Phaser.Input.Events.POINTER_OVER, () => resetBtn.setAlpha(1));
+    resetBtn.on(Phaser.Input.Events.POINTER_OUT, () => resetBtn.setAlpha(0.5));
+    resetBtn.on(Phaser.Input.Events.POINTER_UP, () => this.restartLevel());
+    this.uiLayer!.add(resetBtn);
+
     return tilesCounter;
   }
 
@@ -503,9 +570,29 @@ export class GameScene extends Scene {
     });
 
     if (allTargetsReached) {
+      this.scene.pause(this);
+      this.scene.setActive(false, this);
       console.log("============= YOU WIN !!! =============");
+      this.scene.launch("GameEndScene", {
+        text: "YOU WIN !!!",
+        doneCallback: () => {
+          this.restartLevel();
+        },
+      });
     } else if (allLasersStopped) {
       console.log("============= YOU LOSE !!! =============");
+      this.scene.launch("GameEndScene", {
+        text: "YOU LOOSE !!!",
+        doneCallback: () => {
+          this.restartLevel();
+        },
+      });
     }
+  }
+
+  protected restartLevel() {
+    this.scene.restart();
+    // this.scene.pause(this);
+    // this.scene.launch("GameEndScene");
   }
 }

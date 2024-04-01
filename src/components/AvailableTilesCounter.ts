@@ -26,7 +26,6 @@ export default class AvailableTilesCounter {
       0.5
     );
     this.selectionRect.setVisible(false);
-    // this.uiLayer.add(this.selectionRect);
   }
 
   public setupScene() {
@@ -49,10 +48,10 @@ export default class AvailableTilesCounter {
         const tileRect = new Phaser.Geom.Rectangle();
         tile.getBounds(undefined, tileRect);
         const txtObj = this.scene.add.text(
-          tileRect.x,
+          tileRect.x + TILE_SIZE / 2,
           tileRect.y + TILE_SIZE + 5,
           `${count}`
-        );
+        ).setOrigin(0.5, 0);
         this.uiLayer.add(txtObj);
         this.blockTextMap.set(type, txtObj);
       }

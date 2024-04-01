@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="48"
+   height="48"
+   viewBox="0 0 12.699999 12.699999"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25)"
+   sodipodi:docname="reset-btn.svg"
+   inkscape:export-filename="018-start-btn.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     inkscape:zoom="14.145833"
+     inkscape:cx="40.400589"
+     inkscape:cy="23.964654"
+     inkscape:window-width="2560"
+     inkscape:window-height="1387"
+     inkscape:window-x="1728"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowWideRounded"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, rounded arrow"
+       markerWidth="0.5"
+       markerHeight="0.5"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid"
+       markerUnits="userSpaceOnUse">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:round"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path3" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="path1"
+       style="fill:none;stroke:#faf928;stroke-width:0.555066;stroke-linecap:round;stroke-miterlimit:3.7;marker-end:url(#ArrowWideRounded);paint-order:stroke fill markers"
+       d="m 8.3407618,2.1542021 c 0.6118806,0.2495024 1.1629137,0.610538 1.6256778,1.0566705 0.9255274,0.8922651 1.4979784,2.1249178 1.4979784,3.4864684 0,2.7231013 -2.2898031,4.930612 -5.1144187,4.930612 -2.8246153,0 -5.1144185,-2.2075108 -5.1144182,-4.930612 -1e-7,-2.7231011 2.2898031,-4.8820059 5.1144183,-4.8820059"
+       sodipodi:nodetypes="cssssc" />
+    <text
+       xml:space="preserve"
+       style="font-size:3.58873px;font-family:Inter;-inkscape-font-specification:Inter;fill:#f3ff8c;stroke:#ffffff;stroke-width:0.53831;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       x="0.042326145"
+       y="8.1212521"
+       id="text1"><tspan
+         sodipodi:role="line"
+         id="tspan1"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.58873px;font-family:Inter;-inkscape-font-specification:'Inter Bold';fill:#8cf0ff;fill-opacity:1;stroke:#ffffff;stroke-width:0.53831;stroke-dasharray:none;stroke-opacity:1"
+         x="0.042326145"
+         y="8.1212521">RESET!</tspan></text>
+  </g>
+</svg>

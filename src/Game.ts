@@ -1,5 +1,6 @@
 import { Game } from "phaser";
 import { GameScene } from "./scenes/GameScene";
+import GameEndScene from "./scenes/GameEndScene";
 
 export class NovaGame extends Game {
   constructor() {
@@ -8,7 +9,7 @@ export class NovaGame extends Game {
       height: 768,
       type: Phaser.AUTO,
       title: "Nova",
-      scene: GameScene,
+      scene: [GameScene, GameEndScene],
       scale: {
         mode: Phaser.Scale.FIT,
       },
