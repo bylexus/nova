@@ -11,8 +11,14 @@ export default class TimedBlock extends Block {
     if (laser instanceof Laser) {
       // slow down / stop laser for an amount of time:
       laser.growFactor = 0;
+      const fadeOutTween = this.scene.add.tween({
+        alpha: 0.4,
+        targets: this,
+        duration: 500
+      });
       this.scene.time.delayedCall(500, () => {
         laser.growFactor = 1;
+        fadeOutTween.destroy();
         this.destroy();
       });
     }

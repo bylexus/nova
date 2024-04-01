@@ -101,11 +101,7 @@ export class GameScene extends Scene {
     this.events.addListener(EVENTS.tileSelected, (type: string) => {
       console.log("Tile selected: " + type);
     });
-
-    // this.startLasers();
   }
-
-  update(time: number, delta: number): void {}
 
   laserDirChangedEvent(
     newDir: LaserDirection,
@@ -382,8 +378,21 @@ export class GameScene extends Scene {
             );
             selection.on(Phaser.Input.Events.POINTER_OVER, () => {
               selection.setAlpha(1);
+              const selectionTween = this.add.tween({
+                targets: selection,
+                duration: 500,
+                loop: -1,
+                yoyo: true,
+                alpha: 0.0001,
+              });
+              selection.setData("pulseTween", selectionTween);
             });
             selection.on(Phaser.Input.Events.POINTER_OUT, () => {
+              const tween = selection.getData("pulseTween");
+              if (tween instanceof Phaser.Tweens.Tween) {
+                selection.setData("pulseTween", null);
+                tween.destroy();
+              }
               selection.setAlpha(0.0001);
             });
 
