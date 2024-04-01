@@ -23,7 +23,7 @@ import LaserCannon from "../sprites/LaserCannon";
 import Target from "../sprites/Target";
 import AvailableTilesCounter from "../components/AvailableTilesCounter";
 
-export class TestScene extends Scene {
+export class GameScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
   private blocks: Phaser.GameObjects.Group | null = null;
   private selectOverlay: Phaser.GameObjects.Group | null = null;
