@@ -16,17 +16,21 @@ import TopRightMirror from "../sprites/TopRightMirror";
 import BlockingBlock from "../sprites/BlockingBlock";
 import Block from "../sprites/Block";
 import BallMirror from "../sprites/BallMirror";
-import { snapToHalfGrid } from "../lib/tools";
+import { floorToGrid, snapToHalfGrid } from "../lib/tools";
 import Cross from "../sprites/Cross";
 import TimedBlock from "../sprites/TimedBlock";
 import LaserCannon from "../sprites/LaserCannon";
 import Target from "../sprites/Target";
+import AvailableTilesCounter from "../components/AvailableTilesCounter";
 
 export class TestScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
   private blocks: Phaser.GameObjects.Group | null = null;
+  private selectOverlay: Phaser.GameObjects.Group | null = null;
   private laserLayer: Phaser.GameObjects.Layer | null = null;
   private blockLayer: Phaser.GameObjects.Layer | null = null;
+  private uiLayer: Phaser.GameObjects.Layer | null = null;
+  private blockCounter: AvailableTilesCounter | null = null;
 
   preload() {
     Object.values(GAME_IMAGES).forEach((value) => {
@@ -46,12 +50,19 @@ export class TestScene extends Scene {
   create() {
     console.log("Main scene created");
 
-    this.lasers = this.add.group();
-    this.blocks = this.add.group();
+    const map = this.make.tilemap({ key: GAME_TILEMAPS.level00.key });
+
     this.laserLayer = this.add.layer().setDepth(1);
     this.blockLayer = this.add.layer().setDepth(2);
+    this.uiLayer = this.add.layer().setDepth(3);
 
-    this.setupBlocks();
+    this.lasers = this.add.group();
+    this.blocks = this.add.group();
+    this.selectOverlay = this.add.group();
+
+    this.blockCounter = this.setupInfoArea(map);
+    this.setupBlocks(map);
+    this.setupTileSelectOverlay(map);
 
     // Setup event listeners
     this.events.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
@@ -73,7 +84,6 @@ export class TestScene extends Scene {
         let head = thisLaser.head;
         let crossBlock = this.findCrossBlockAt(head);
         if (crossBlock) {
-          console.log("let laser pass - within cross ");
         } else {
           otherLaser.setActive(false);
           thisLaser.setActive(false);
@@ -87,145 +97,11 @@ export class TestScene extends Scene {
       this.checkGameEnd();
     });
 
+    this.events.addListener(EVENTS.tileSelected, (type: string) => {
+      console.log("Tile selected: " + type);
+    });
+
     this.startLasers();
-
-
-    // Test Group 1
-    // (() => {
-    //   const mirr1 = new BallMirror(this, TILE_SIZE * 5, TILE_SIZE * 3);
-    //   mirr1.configureLaserCollider(this.lasers);
-    //   this.blocks.add(mirr1);
-
-    //   // tl
-    //   const tl = new TopLeftMirror(this, TILE_SIZE * 5, TILE_SIZE * 5);
-    //   tl.configureLaserCollider(this.lasers);
-    //   this.blocks.add(tl);
-
-    //   // br
-    //   const br = new BottomRightMirror(this, TILE_SIZE * 5, TILE_SIZE * 1);
-    //   br.configureLaserCollider(this.lasers);
-    //   this.blocks.add(br);
-
-    //   // bl
-    //   const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 1);
-    //   bl.configureLaserCollider(this.lasers);
-    //   this.blocks.add(bl);
-
-    //   // tr
-    //   const tr = new TopRightMirror(this, TILE_SIZE * 8, TILE_SIZE * 5);
-    //   tr.configureLaserCollider(this.lasers);
-    //   this.blocks.add(tr);
-
-    //   // block
-    //   const block = new BlockingBlock(this, TILE_SIZE * 12, TILE_SIZE * 5);
-    //   block.configureLaserCollider(this.lasers);
-    //   this.blocks.add(block);
-
-    //   // block 2
-    //   const block2 = new BlockingBlock(this, TILE_SIZE * 2, TILE_SIZE * 5);
-    //   block2.configureLaserCollider(this.lasers);
-    //   this.blocks.add(block2);
-
-    //   // coming from right:
-    //   const actLaser = new HLaser(
-    //     this,
-    //     TILE_SIZE * 7,
-    //     TILE_SIZE * 3,
-    //     LaserDirection.LEFT
-    //   );
-    //   actLaser.configureLaserCollider(this.lasers);
-    //   this.lasers.add(actLaser);
-    // })();
-
-    // Test Group 2
-    // (() => {
-    //   // tl
-    //   const tl = new TopLeftMirror(this, TILE_SIZE * 5, TILE_SIZE * 10);
-    //   tl.configureLaserCollider(this.lasers);
-    //   this.blocks.add(tl);
-
-    //   // br
-    //   const br = new BottomRightMirror(this, TILE_SIZE * 5, TILE_SIZE * 7);
-    //   br.configureLaserCollider(this.lasers);
-    //   this.blocks.add(br);
-
-    //   // mirror ball
-    //   const mirr1 = new BallMirror(this, TILE_SIZE * 6, TILE_SIZE * 7);
-    //   mirr1.configureLaserCollider(this.lasers);
-    //   this.blocks.add(mirr1);
-
-    //   // cross
-    //   const cross1 = new Cross(this, TILE_SIZE * 5, TILE_SIZE * 8);
-    //   cross1.configureLaserCollider(this.lasers);
-    //   this.blocks.add(cross1);
-
-    //   // bl
-    //   const bl = new BottomLeftMirror(this, TILE_SIZE * 8, TILE_SIZE * 7);
-    //   bl.configureLaserCollider(this.lasers);
-    //   this.blocks.add(bl);
-
-    //   // tr
-    //   const tr = new TopRightMirror(this, TILE_SIZE * 8, TILE_SIZE * 10);
-    //   tr.configureLaserCollider(this.lasers);
-    //   this.blocks.add(tr);
-
-    //   // block
-    //   const block = new BlockingBlock(this, TILE_SIZE * 17, TILE_SIZE * 10);
-    //   block.configureLaserCollider(this.lasers);
-    //   this.blocks.add(block);
-
-    //   const c1 = new TopRightMirror(this, TILE_SIZE * 2, TILE_SIZE * 10);
-    //   c1.configureLaserCollider(this.lasers);
-    //   this.blocks.add(c1);
-
-    //   const c2 = new BottomRightMirror(this, TILE_SIZE * 2, TILE_SIZE * 8);
-    //   c2.configureLaserCollider(this.lasers);
-    //   this.blocks.add(c2);
-
-    //   // coming from right:
-    //   const actLaser = new VLaser(
-    //     this,
-    //     6 * TILE_SIZE,
-    //     TILE_SIZE * 9,
-    //     LaserDirection.UP
-    //   );
-    //   actLaser.configureLaserCollider(this.lasers!);
-    //   this.lasers.add(actLaser);
-    // })();
-
-    // timed blocks:
-    // const t1 = new TimedBlock(this, TILE_SIZE * 6, TILE_SIZE * 12);
-    // t1.configureLaserCollider(this.lasers);
-    // this.blocks.add(t1);
-    // const t2 = new TimedBlock(this, TILE_SIZE * 7, TILE_SIZE * 12);
-    // t2.configureLaserCollider(this.lasers);
-    // this.blocks.add(t2);
-    // const t3 = new TimedBlock(this, TILE_SIZE * 8, TILE_SIZE * 12);
-    // t3.configureLaserCollider(this.lasers);
-    // this.blocks.add(t3);
-
-    // 2 lasers pointing at each other:
-    // (() => {
-    //   // coming from right:
-    //   const rl = new HLaser(
-    //     this,
-    //     15 * TILE_SIZE,
-    //     TILE_SIZE * 12,
-    //     LaserDirection.LEFT
-    //   );
-    //   rl.configureLaserCollider(this.lasers!);
-    //   this.lasers.add(rl);
-
-    //   // coming from left:
-    //   const ll = new HLaser(
-    //     this,
-    //     2 * TILE_SIZE,
-    //     TILE_SIZE * 12,
-    //     LaserDirection.RIGHT
-    //   );
-    //   ll.configureLaserCollider(this.lasers!);
-    //   this.lasers.add(ll);
-    // })();
   }
 
   update(time: number, delta: number): void {}
@@ -321,7 +197,6 @@ export class TestScene extends Scene {
         y = oldLaser.y + oldLaser.height;
         break;
     }
-    console.log(x, y);
     oldLaser.setActive(false);
     // important: remove collider on now inactive laser:
     // only the head laser should have a collider:
@@ -331,7 +206,6 @@ export class TestScene extends Scene {
     // snap new laser to grid:
     x = snapToHalfGrid(x);
     y = snapToHalfGrid(y);
-    console.log(x, y);
     switch (newDir) {
       case LaserDirection.LEFT:
         newLaser = new HLaser(this, x, y, LaserDirection.LEFT);
@@ -368,8 +242,19 @@ export class TestScene extends Scene {
     return null;
   }
 
-  protected setupBlocks() {
-    const map = this.make.tilemap({ key: GAME_TILEMAPS.level00.key });
+  protected setupInfoArea(map: Phaser.Tilemaps.Tilemap): AvailableTilesCounter {
+    // draw the block tiles:
+    const tileset = map.addTilesetImage("tileset", "tileset");
+    const layer = map.createLayer("Info", tileset!, 0, 0)!;
+    this.uiLayer!.add(layer);
+
+    // setup counters
+    const tilesCounter = new AvailableTilesCounter(this, this.uiLayer!, layer);
+    tilesCounter.setupScene();
+    return tilesCounter;
+  }
+
+  protected setupBlocks(map: Phaser.Tilemaps.Tilemap) {
     const tileset = map.getTileset("tileset")!;
 
     map.getLayer("Blocks")!.data.forEach((line: Phaser.Tilemaps.Tile[]) => {
@@ -377,70 +262,154 @@ export class TestScene extends Scene {
         const tileType = tileset.getTileData(
           (tile as Phaser.Tilemaps.Tile).index
         )?.type;
-        let sprite = null;
-        let x = tile.x * TILE_SIZE + TILE_SIZE / 2;
-        let y = tile.y * TILE_SIZE + TILE_SIZE / 2;
-        switch (tileType) {
-          case "BlockingBlock":
-            sprite = new BlockingBlock(this, x, y);
-            break;
-          case "Cross":
-            sprite = new Cross(this, x, y);
-            break;
-          case "BallMirror":
-            sprite = new BallMirror(this, x, y);
-            break;
-          case "BottomLeftMirror":
-            sprite = new BottomLeftMirror(this, x, y);
-            break;
-          case "BottomRightMirror":
-            sprite = new BottomRightMirror(this, x, y);
-            break;
-          case "TopLeftMirror":
-            sprite = new TopLeftMirror(this, x, y);
-            break;
-          case "TopRightMirror":
-            sprite = new TopRightMirror(this, x, y);
-            break;
-          case "TimedBlock":
-            sprite = new TimedBlock(this, x, y);
-            break;
-          case "TimedBlock":
-            sprite = new TimedBlock(this, x, y);
-            break;
-          case "LaserStartDown":
-            sprite = new LaserCannon(this, x, y, "down");
-            break;
-          case "LaserStartUp":
-            sprite = new LaserCannon(this, x, y, "up");
-            break;
-          case "LaserStartLeft":
-            sprite = new LaserCannon(this, x, y, "left");
-            break;
-          case "LaserStartRight":
-            sprite = new LaserCannon(this, x, y, "right");
-            break;
-          case "TargetUp":
-            sprite = new Target(this, x, y, "up");
-            break;
-          case "TargetDown":
-            sprite = new Target(this, x, y, "down");
-            break;
-          // fill the cases for left and right:
-          case "TargetLeft":
-            sprite = new Target(this, x, y, "left");
-            break;
-          case "TargetRight":
-            sprite = new Target(this, x, y, "right");
-            break;
-        }
-        if (sprite) {
-          sprite.configureLaserCollider(this.lasers!);
-          this.blocks!.add(sprite);
-          this.blockLayer!.add(sprite);
-        }
+        this.addBlock(tileType!, tile.x * TILE_SIZE, tile.y * TILE_SIZE);
       });
     });
+  }
+
+  /**
+   * Adds a block to the scene, snapping it to the grid if necessary.
+   * Type must be one of the known block types (block class names).
+   * 
+   * @param type 
+   * @param worldX 
+   * @param worldY 
+   * @returns Block | null
+   */
+  protected addBlock(
+    type: string,
+    worldX: number,
+    worldY: number
+  ): Block | null {
+    let sprite = null;
+    let x = floorToGrid(worldX) + TILE_SIZE / 2;
+    let y = floorToGrid(worldY) + TILE_SIZE / 2;
+    switch (type) {
+      case "BlockingBlock":
+        sprite = new BlockingBlock(this, x, y);
+        break;
+      case "Cross":
+        sprite = new Cross(this, x, y);
+        break;
+      case "BallMirror":
+        sprite = new BallMirror(this, x, y);
+        break;
+      case "BottomLeftMirror":
+        sprite = new BottomLeftMirror(this, x, y);
+        break;
+      case "BottomRightMirror":
+        sprite = new BottomRightMirror(this, x, y);
+        break;
+      case "TopLeftMirror":
+        sprite = new TopLeftMirror(this, x, y);
+        break;
+      case "TopRightMirror":
+        sprite = new TopRightMirror(this, x, y);
+        break;
+      case "TimedBlock":
+        sprite = new TimedBlock(this, x, y);
+        break;
+      case "LaserStartDown":
+        sprite = new LaserCannon(this, x, y, "down");
+        break;
+      case "LaserStartUp":
+        sprite = new LaserCannon(this, x, y, "up");
+        break;
+      case "LaserStartLeft":
+        sprite = new LaserCannon(this, x, y, "left");
+        break;
+      case "LaserStartRight":
+        sprite = new LaserCannon(this, x, y, "right");
+        break;
+      case "TargetUp":
+        sprite = new Target(this, x, y, "up");
+        break;
+      case "TargetDown":
+        sprite = new Target(this, x, y, "down");
+        break;
+      // fill the cases for left and right:
+      case "TargetLeft":
+        sprite = new Target(this, x, y, "left");
+        break;
+      case "TargetRight":
+        sprite = new Target(this, x, y, "right");
+        break;
+    }
+    if (sprite) {
+      sprite.configureLaserCollider(this.lasers!);
+      this.blocks!.add(sprite);
+      this.blockLayer!.add(sprite);
+    }
+    return sprite;
+  }
+
+  protected setupTileSelectOverlay(map: Phaser.Tilemaps.Tilemap) {
+    const layerData = map.getLayer("SelectionArea");
+    if (layerData) {
+      layerData.data.forEach((line: Phaser.Tilemaps.Tile[]) => {
+        line.forEach((tile: Phaser.Tilemaps.Tile) => {
+          if (tile.index >= 0) {
+            const x = tile.x * TILE_SIZE + TILE_SIZE / 2;
+            const y = tile.y * TILE_SIZE + TILE_SIZE / 2;
+            const selection = this.add.sprite(x, y, GAME_IMAGES.tileSelect.key);
+            selection.setActive(false);
+            selection.setAlpha(0.0001);
+            selection.setInteractive();
+            selection.on("pointerover", () => {
+              selection.setAlpha(1);
+            });
+            selection.on("pointerout", () => {
+              selection.setAlpha(0.0001);
+            });
+
+            // on click on the game area we have to check if
+            // - a tile to place is selected
+            // - the selected tile has more than 0 blocks left
+            // - at the clicked position is nothing
+            selection.on(
+              "pointerdown",
+              (e: Phaser.Input.Pointer, x: number, y: number) => {
+                if (!this.blockCounter!.selectedTileType) {
+                  // TODO: BEEP: no placement possible, no block selected
+                  console.log("no block selected");
+                  return;
+                }
+
+                if (!this.blockCounter!.selectedTileCount) {
+                  // TODO: BEEP: no placement possible, no blocks left
+                  console.log("no more blocks");
+                  return;
+                }
+
+                let foundBlock = false;
+                for (let block of this.blocks!.getChildren()) {
+                  if (
+                    block instanceof Block &&
+                    Phaser.Geom.Rectangle.ContainsPoint(
+                      block.getBounds(),
+                      new Phaser.Geom.Point(e.worldX, e.worldY)
+                    )
+                  ) {
+                    foundBlock = true;
+                    break;
+                  }
+                }
+                if (foundBlock) {
+                  // TODO: BEEP: block already placed
+                  console.log("block already placed");
+                } else {
+                  const blockType = this.blockCounter?.selectedTileType!;
+                  this.blockCounter?.decreaseTile(blockType);
+                  this.addBlock(blockType, e.worldX, e.worldY);
+                }
+              }
+            );
+            this.selectOverlay!.add(selection);
+            this.uiLayer?.add(selection);
+          }
+        });
+      });
+    }
   }
 
   protected startLasers() {

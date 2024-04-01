@@ -32,7 +32,7 @@ export default class Block extends Phaser.Physics.Arcade.Sprite {
    * As soon as a laser enters a block, a single overlap event is triggered,
    * and the laser is marked as "already seen". So the overlapLaserCallback is
    * only executed once per laser.
-   * 
+   *
    * @param laser The laser that enters this block's collider zone
    */
   protected overlapLaserCallback(laser: Laser) {}

@@ -47,9 +47,10 @@
         "levels/level-00.tmx"
     ],
     "project": "levels.tiled-project",
+    "property.type": "int",
     "recentFiles": [
-        "levels/level-00.tmx",
         "tileset.tsx",
+        "levels/level-00.tmx",
         "blocks.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
