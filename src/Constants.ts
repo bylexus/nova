@@ -6,6 +6,7 @@ export const GAME_IMAGES = {
   laserH: { key: "laser-h", url: "assets/laser-horiz-1px.png" },
   laserV: { key: "laser-v", url: "assets/laser-vert-1px.png" },
   tileSelect: { key: "tileSelect", url: "assets/017-tile-select.png" },
+  startBtn: { key: "startBtn", url: "assets/018-start-btn.png" },
   tileset: { key: "tileset", url: "assets/tileset.png" },
 };
 

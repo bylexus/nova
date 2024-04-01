@@ -31,6 +31,7 @@ export class TestScene extends Scene {
   private blockLayer: Phaser.GameObjects.Layer | null = null;
   private uiLayer: Phaser.GameObjects.Layer | null = null;
   private blockCounter: AvailableTilesCounter | null = null;
+  private state: "stopped" | "running" | "pause" = "stopped";
 
   preload() {
     Object.values(GAME_IMAGES).forEach((value) => {
@@ -101,7 +102,7 @@ export class TestScene extends Scene {
       console.log("Tile selected: " + type);
     });
 
-    this.startLasers();
+    // this.startLasers();
   }
 
   update(time: number, delta: number): void {}
@@ -251,6 +252,19 @@ export class TestScene extends Scene {
     // setup counters
     const tilesCounter = new AvailableTilesCounter(this, this.uiLayer!, layer);
     tilesCounter.setupScene();
+
+    // add start btn:
+    const startBtn = this.add.sprite(
+      this.cameras.default.width - TILE_SIZE - 5,
+      TILE_SIZE / 2,
+      GAME_IMAGES.startBtn.key
+    );
+    startBtn.setInteractive();
+    startBtn.setAlpha(0.5);
+    startBtn.on(Phaser.Input.Events.POINTER_OVER, () => startBtn.setAlpha(1));
+    startBtn.on(Phaser.Input.Events.POINTER_OUT, () => startBtn.setAlpha(0.5));
+    startBtn.on(Phaser.Input.Events.POINTER_UP, () => this.startLasers());
+    this.uiLayer!.add(startBtn);
     return tilesCounter;
   }
 
@@ -270,10 +284,10 @@ export class TestScene extends Scene {
   /**
    * Adds a block to the scene, snapping it to the grid if necessary.
    * Type must be one of the known block types (block class names).
-   * 
-   * @param type 
-   * @param worldX 
-   * @param worldY 
+   *
+   * @param type
+   * @param worldX
+   * @param worldY
    * @returns Block | null
    */
   protected addBlock(
@@ -352,23 +366,38 @@ export class TestScene extends Scene {
             const x = tile.x * TILE_SIZE + TILE_SIZE / 2;
             const y = tile.y * TILE_SIZE + TILE_SIZE / 2;
             const selection = this.add.sprite(x, y, GAME_IMAGES.tileSelect.key);
+            // selection sprite is larger than grid: limit hit box:
+            const hitBoxoffsetX = (selection.width - TILE_SIZE) / 2;
+            const hitBoxoffsetY = (selection.height - TILE_SIZE) / 2;
             selection.setActive(false);
             selection.setAlpha(0.0001);
-            selection.setInteractive();
-            selection.on("pointerover", () => {
+            selection.setInteractive(
+              new Phaser.Geom.Rectangle(
+                hitBoxoffsetX,
+                hitBoxoffsetY,
+                TILE_SIZE,
+                TILE_SIZE
+              ),
+              Phaser.Geom.Rectangle.Contains
+            );
+            selection.on(Phaser.Input.Events.POINTER_OVER, () => {
               selection.setAlpha(1);
             });
-            selection.on("pointerout", () => {
+            selection.on(Phaser.Input.Events.POINTER_OUT, () => {
               selection.setAlpha(0.0001);
             });
 
             // on click on the game area we have to check if
+            // - the game state is i stopped state
             // - a tile to place is selected
             // - the selected tile has more than 0 blocks left
             // - at the clicked position is nothing
             selection.on(
-              "pointerdown",
+              Phaser.Input.Events.POINTER_DOWN,
               (e: Phaser.Input.Pointer, x: number, y: number) => {
+                if (this.state !== "stopped") {
+                  return;
+                }
                 if (!this.blockCounter!.selectedTileType) {
                   // TODO: BEEP: no placement possible, no block selected
                   console.log("no block selected");
@@ -413,6 +442,9 @@ export class TestScene extends Scene {
   }
 
   protected startLasers() {
+    if (this.state !== "stopped") {
+      return;
+    }
     this.lasers?.clear(true, true);
     this.laserLayer!.removeAll();
     this.blocks!.getChildren().forEach((block) => {
@@ -438,6 +470,7 @@ export class TestScene extends Scene {
         this.laserLayer!.add(laser);
       }
     });
+    this.state = "running";
   }
 
   protected checkGameEnd() {
