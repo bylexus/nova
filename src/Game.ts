@@ -5,6 +5,10 @@ import GameEndScene from "./scenes/GameEndScene";
 export class NovaGame extends Game {
   constructor() {
     super({
+      parent: 'app',
+      dom: {
+        createContainer: true
+      },
       width: 1024,
       height: 768,
       type: Phaser.AUTO,

@@ -24,6 +24,7 @@ import Target from "../sprites/Target";
 import AvailableTilesCounter from "../components/AvailableTilesCounter";
 import LaserDirection from "../lib/LaserDirection";
 import LaserHead from "../sprites/LaserHead";
+import GameEndStatus from "../lib/GameEndStatus";
 
 export class GameScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
@@ -104,7 +105,7 @@ export class GameScene extends Scene {
   create() {
     console.log("Main scene created");
 
-    const map = this.make.tilemap({ key: GAME_TILEMAPS.level00.key });
+    const map = this.make.tilemap({ key: GAME_TILEMAPS.level03.key });
 
     this.laserLayer = this.add.layer().setDepth(1);
     this.blockLayer = this.add.layer().setDepth(2);
@@ -614,8 +615,11 @@ export class GameScene extends Scene {
       this.scene.pause(this);
       console.log("============= YOU WIN !!! =============");
       this.scene.launch("GameEndScene", {
-        text: "YOU WIN !!!",
-        doneCallback: () => {
+        status: GameEndStatus.WON,
+        restartCallback: () => {
+          this.restartLevel();
+        },
+        nextLevelCallback: () => {
           this.restartLevel();
         },
       });
@@ -623,8 +627,8 @@ export class GameScene extends Scene {
       this.scene.pause(this);
       console.log("============= YOU LOSE !!! =============");
       this.scene.launch("GameEndScene", {
-        text: "YOU LOOSE !!!",
-        doneCallback: () => {
+        status: GameEndStatus.LOST,
+        restartCallback: () => {
           this.restartLevel();
         },
       });

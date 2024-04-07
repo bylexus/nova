@@ -18,6 +18,7 @@ export const GAME_SPRITESHEETS = {
 
 export const GAME_TILEMAPS = {
   level00: { key: "level-00", url: "assets/levels/level-00.json" },
+  level03: { key: "level-03", url: "assets/levels/level-03.json" },
 };
 
 export const EVENTS = {
