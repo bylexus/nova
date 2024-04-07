@@ -1,6 +1,6 @@
 export const TILE_SIZE = 48;
 export const LASER_WIDTH = 5;
-export const LASER_GROW_SPEED = 150; // as in 150 px per second
+export const LASER_GROW_SPEED = 120; // as in 120 px per second
 
 export const GAME_IMAGES = {
   laserH: { key: "laser-h", url: "assets/laser-horiz-1px.png" },

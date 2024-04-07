@@ -20,8 +20,10 @@ export default class Block extends Phaser.Physics.Arcade.Sprite {
       laserHeadGroup,
       this,
       (laserHead) => {
-        this.addSeenLaserHead(laserHead as LaserHead);
-        this.overlapLaserCallback(laserHead as LaserHead);
+        if (laserHead instanceof LaserHead) {
+          this.addSeenLaserHead(laserHead);
+          this.overlapLaserCallback(laserHead);
+        }
       },
       (laserHead) => this.seenLaserHeads.has(laserHead as LaserHead) !== true
     );

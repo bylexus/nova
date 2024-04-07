@@ -26,27 +26,7 @@ export default class LaserHead extends Phaser.Physics.Arcade.Sprite {
   }
 
   public preUpdate(_time: number, _delta: number): void {
-    const tailBeam = this.tailBeams[this.tailBeams.length - 1];
-    // always snap to grid: sometimes we get some jitter we need to correct:
-    if (
-      this.direction === LaserDirection.UP ||
-      this.direction === LaserDirection.DOWN
-    ) {
-      this.setX(snapToHalfGrid(this.x));
-      // resize the tail beam:
-      if (tailBeam) {
-        tailBeam.height = Math.abs(this.y - tailBeam.y);
-      }
-    } else if (
-      this.direction === LaserDirection.LEFT ||
-      this.direction === LaserDirection.RIGHT
-    ) {
-      this.setY(snapToHalfGrid(this.y));
-      // resize the tail beam:
-      if (tailBeam) {
-        tailBeam.width = Math.abs(this.x - tailBeam.x);
-      }
-    }
+    this.growLaser();
   }
 
   public startMoving() {
@@ -68,5 +48,53 @@ export default class LaserHead extends Phaser.Physics.Arcade.Sprite {
 
   public stopMoving() {
     this.setVelocity(0, 0);
+  }
+
+  public growLaser(): void {
+    // always snap to grid: sometimes we get some jitter we need to correct:
+    const tailBeam = this.tailBeams[this.tailBeams.length - 1];
+    if (
+      this.direction === LaserDirection.UP ||
+      this.direction === LaserDirection.DOWN
+    ) {
+      this.setX(snapToHalfGrid(this.x));
+      // resize the tail beam:
+      if (tailBeam) {
+        tailBeam.height = Math.abs(this.y - tailBeam.y);
+      }
+    } else if (
+      this.direction === LaserDirection.LEFT ||
+      this.direction === LaserDirection.RIGHT
+    ) {
+      this.setY(snapToHalfGrid(this.y));
+      // resize the tail beam:
+      if (tailBeam) {
+        tailBeam.width = Math.abs(this.x - tailBeam.x);
+      }
+    }
+  }
+
+  public correctToHalfGrid(): void {
+    // always snap to grid: sometimes we get some jitter we need to correct:
+    const tailBeam = this.tailBeams[this.tailBeams.length - 1];
+    if (
+      this.direction === LaserDirection.UP ||
+      this.direction === LaserDirection.DOWN
+    ) {
+      this.setX(snapToHalfGrid(this.x));
+      // resize the tail beam:
+      if (tailBeam) {
+        tailBeam.height = snapToHalfGrid(Math.abs(this.y - tailBeam.y));
+      }
+    } else if (
+      this.direction === LaserDirection.LEFT ||
+      this.direction === LaserDirection.RIGHT
+    ) {
+      this.setY(snapToHalfGrid(this.y));
+      // resize the tail beam:
+      if (tailBeam) {
+        tailBeam.width = snapToHalfGrid(Math.abs(this.x - tailBeam.x));
+      }
+    }
   }
 }

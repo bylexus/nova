@@ -231,6 +231,7 @@ export class GameScene extends Scene {
     _sourceBlock: Block | null
   ): Laser | null {
     console.log("Laser dir changed: " + newDir);
+    laserHead.correctToHalfGrid();
     let newLaserPart = this.turnLaser(laserHead, newDir);
     if (newLaserPart) {
       this.lasers?.add(newLaserPart);
