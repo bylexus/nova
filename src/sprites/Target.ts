@@ -1,41 +1,46 @@
 import { EVENTS, GAME_SPRITESHEETS } from "../Constants";
+import LaserDirection from "../lib/LaserDirection";
 import Block from "./Block";
-import Laser from "./Laser";
+import LaserHead from "./LaserHead";
 
 const DirectionFrameMap = {
-  up: 12,
-  right: 13,
-  down: 14,
-  left: 15,
+  [LaserDirection.UP]: 12,
+  [LaserDirection.RIGHT]: 13,
+  [LaserDirection.DOWN]: 14,
+  [LaserDirection.LEFT]: 15,
 };
 
 export default class Target extends Block {
   public laserInTarget: boolean = false;
-  protected direction: "up" | "down" | "left" | "right";
+  protected direction: LaserDirection;
 
   constructor(
     scene: Phaser.Scene,
     x: number,
     y: number,
-    direction: "up" | "down" | "left" | "right"
+    direction: LaserDirection
   ) {
     const frame = DirectionFrameMap[direction];
     super(scene, x, y, GAME_SPRITESHEETS.spritesheet.key, frame);
     this.direction = direction;
   }
 
-  protected overlapLaserCallback(laser: Laser) {
-    if (laser instanceof Laser) {
+  protected overlapLaserCallback(laserHead: LaserHead) {
+    if (laserHead instanceof LaserHead) {
       if (
-        (this.direction === "up" && laser.direction === "down") ||
-        (this.direction === "down" && laser.direction === "up") ||
-        (this.direction === "left" && laser.direction === "right") ||
-        (this.direction === "right" && laser.direction === "left")
+        (this.direction === LaserDirection.UP &&
+          laserHead.direction === LaserDirection.DOWN) ||
+        (this.direction === LaserDirection.DOWN &&
+          laserHead.direction === LaserDirection.UP) ||
+        (this.direction === LaserDirection.LEFT &&
+          laserHead.direction === LaserDirection.RIGHT) ||
+        (this.direction === LaserDirection.RIGHT &&
+          laserHead.direction === LaserDirection.LEFT)
       ) {
         this.laserInTarget = true;
-        this.scene.events.emit(EVENTS.targetReached, this, laser);
+        this.scene.events.emit(EVENTS.targetReached, this, laserHead);
       } else {
-        this.scene.events.emit(EVENTS.blockHit, this, laser);
+        this.scene.events.emit(EVENTS.blockHit, this, laserHead);
       }
     }
   }

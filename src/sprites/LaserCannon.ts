@@ -1,6 +1,7 @@
 import { EVENTS, GAME_SPRITESHEETS } from "../Constants";
+import LaserDirection from "../lib/LaserDirection";
 import Block from "./Block";
-import Laser from "./Laser";
+import LaserHead from "./LaserHead";
 
 const DirectionFrameMap = {
   up: 11,
@@ -9,22 +10,22 @@ const DirectionFrameMap = {
   down: 8,
 };
 export default class LaserCannon extends Block {
-  public direction: "up" | "down" | "left" | "right";
+  public direction: LaserDirection;
 
   constructor(
     scene: Phaser.Scene,
     x: number,
     y: number,
-    direction: "up" | "down" | "left" | "right"
+    direction: LaserDirection
   ) {
     const frame = DirectionFrameMap[direction];
     super(scene, x, y, GAME_SPRITESHEETS.spritesheet.key, frame);
     this.direction = direction;
   }
 
-  protected overlapLaserCallback(laser: Laser) {
-    if (laser instanceof Laser) {
-      this.scene.events.emit(EVENTS.blockHit, this, laser);
+  protected overlapLaserCallback(laserHead: LaserHead) {
+    if (laserHead instanceof LaserHead) {
+      this.scene.events.emit(EVENTS.blockHit, this, laserHead);
     }
   }
 }

@@ -1,16 +1,9 @@
-import { EVENTS, LASER_GROW_SPEED } from "../Constants";
-
-export enum LaserDirection {
-  UP = "up",
-  DOWN = "down",
-  LEFT = "left",
-  RIGHT = "right",
-}
+import { EVENTS } from "../Constants";
+import LaserDirection from "../lib/LaserDirection";
+import LaserHead from "./LaserHead";
 
 export default abstract class Laser extends Phaser.GameObjects.TileSprite {
-  protected seenLasers: Set<Laser> = new Set();
-  protected laserCollider: Phaser.Physics.Arcade.Collider | null = null;
-  public growFactor: number = 1;
+  protected laserHeadCollider: Phaser.Physics.Arcade.Collider | null = null;
 
   constructor(
     scene: Phaser.Scene,
@@ -28,56 +21,55 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
     (this.body as Phaser.Physics.Arcade.Body).syncBounds = true;
   }
 
-  public abstract grow(amount: number): void;
   public abstract get direction(): LaserDirection;
-  public abstract get head(): Phaser.Geom.Point;
 
-  protected preUpdate(time: number, delta: number) {
-    if (!this.active) {
+  public configureLaserHeadCollider(laserHeadGroup: Phaser.GameObjects.Group) {
+    if (this.laserHeadCollider) {
       return;
     }
-
-    let grow = (LASER_GROW_SPEED * delta) / 1000;
-    this.grow(grow);
-  }
-
-  public configureLaserCollider(laserGroup: Phaser.GameObjects.Group) {
-    if (this.laserCollider) {
-      return;
-    }
-    this.laserCollider = this.scene.physics.add.overlap(
-      laserGroup,
+    this.laserHeadCollider = this.scene.physics.add.overlap(
+      laserHeadGroup,
       this,
-      (laser) => {
-        this.addSeenLaser(laser as Laser);
-        this.overlapLaserCallback(laser as Laser);
+      (laserHead) => {
+        // this.addSeenLaserHead(laserHead as LaserHead);
+        this.overlapLaserHeadCallback(laserHead as LaserHead);
       },
-      (laser) => {
-        return this.seenLasers.has(laser as Laser) !== true;
+      (laserHead) => {
+        if (laserHead instanceof LaserHead) {
+          if (!laserHead.active) {
+            return false;
+          }
+          // if this beam is the last or 2nd last beam of the collided head,
+          // we ignore it: the last 2 beams cannot be coliding with the head
+          if (
+            laserHead.tailBeams[laserHead.tailBeams.length - 1] === this ||
+            laserHead.tailBeams[laserHead.tailBeams.length - 2] === this
+          ) {
+            return false;
+          }
+        }
+        return true;
       }
     );
   }
 
   /**
-   * This method is called when a non-seen laser overlap occurs:
-   * As soon as a laser touches another laser, a single overlap event is triggered,
-   * and the laser is marked as "already seen". So the overlapLaserCallback is
-   * only executed once per laser.
+   * This method is called when a non-seen laser head overlap occurs:
+   * As soon as a laser head touches another laser, a single overlap event is triggered,
+   * and the laser head is marked as "already seen". So the overlapLaserCallback is
+   * only executed once per laser head.
    *
-   * @param otherLaser The other laser that enters this block's collider zone
+   * @param laserHead The laser head that enters this block's collider zone
    */
-  protected overlapLaserCallback(otherLaser: Laser) {
-    this.scene.events.emit(EVENTS.laserHit, otherLaser, this);
+  protected overlapLaserHeadCallback(laserHead: LaserHead) {
+    this.scene.events.emit(EVENTS.laserHit, laserHead, this);
   }
 
-  public addSeenLaser(laser: Laser) {
-    this.seenLasers.add(laser);
-  }
 
   public removeLaserCollider() {
-    if (this.laserCollider) {
-      this.laserCollider.destroy();
-      this.laserCollider = null;
+    if (this.laserHeadCollider) {
+      this.laserHeadCollider.destroy();
+      this.laserHeadCollider = null;
     }
   }
 }

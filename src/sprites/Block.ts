@@ -1,7 +1,7 @@
-import Laser from "./Laser";
+import LaserHead from "./LaserHead";
 
 export default class Block extends Phaser.Physics.Arcade.Sprite {
-  protected seenLasers: Set<Laser> = new Set();
+  protected seenLaserHeads: Set<LaserHead> = new Set();
 
   constructor(
     scene: Phaser.Scene,
@@ -15,29 +15,31 @@ export default class Block extends Phaser.Physics.Arcade.Sprite {
     scene.physics.add.existing(this, true);
   }
 
-  public configureLaserCollider(laserGroup: Phaser.GameObjects.Group) {
+  public configureLaserHeadCollider(laserHeadGroup: Phaser.GameObjects.Group) {
     this.scene.physics.add.overlap(
-      laserGroup,
+      laserHeadGroup,
       this,
-      (laser) => {
-        this.addSeenLaser(laser as Laser);
-        this.overlapLaserCallback(laser as Laser);
+      (laserHead) => {
+        this.addSeenLaserHead(laserHead as LaserHead);
+        this.overlapLaserCallback(laserHead as LaserHead);
       },
-      (laser) => this.seenLasers.has(laser as Laser) !== true
+      (laserHead) => this.seenLaserHeads.has(laserHead as LaserHead) !== true
     );
   }
 
   /**
-   * This method is called when a non-seen laser overlap occurs:
-   * As soon as a laser enters a block, a single overlap event is triggered,
-   * and the laser is marked as "already seen". So the overlapLaserCallback is
-   * only executed once per laser.
+   * This method is called when a non-seen laser head overlap occurs:
+   * As soon as a laser head enters a block, a single overlap event is triggered,
+   * and the laser head is marked as "already seen". So the overlapLaserCallback is
+   * only executed once per laser head.
    *
-   * @param laser The laser that enters this block's collider zone
+   * @param laserHead The laser head that enters this block's collider zone
    */
-  protected overlapLaserCallback(laser: Laser) {}
+  protected overlapLaserCallback(_laserHead: LaserHead) {
+    // implement in child classes
+  }
 
-  public addSeenLaser(laser: Laser) {
-    this.seenLasers.add(laser);
+  public addSeenLaserHead(laserHead: LaserHead) {
+    this.seenLaserHeads.add(laserHead);
   }
 }

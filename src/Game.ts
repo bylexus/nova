@@ -19,8 +19,8 @@ export class NovaGame extends Game {
       physics: {
         default: "arcade",
         arcade: {
-          debug: false,
-          // debug: true,
+          // debug: false,
+          debug: true,
           gravity: { x: 0, y: 0 },
         },
       },

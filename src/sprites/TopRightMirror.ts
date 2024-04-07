@@ -1,8 +1,7 @@
 import { EVENTS, GAME_SPRITESHEETS } from "../Constants";
+import LaserDirection from "../lib/LaserDirection";
 import Block from "./Block";
-import HLaser from "./HLaser";
-import Laser, { LaserDirection } from "./Laser";
-import VLaser from "./VLaser";
+import LaserHead from "./LaserHead";
 
 export default class TopRightMirror extends Block {
   constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -11,36 +10,34 @@ export default class TopRightMirror extends Block {
     // physics body is half the size of the sprite, to collide ad the center of the triangle's
     // hypotheneus
     (this.body as Phaser.Physics.Arcade.Body).setSize(
-      this.width / 2,
-      this.height / 2
+      this.width / 2 + 1,
+      this.height / 2 + 1
     );
     (this.body as Phaser.Physics.Arcade.Body).setOffset(0, this.height / 2);
   }
 
-  protected overlapLaserCallback(laser: Laser) {
-    if (laser instanceof VLaser) {
+  protected overlapLaserCallback(laserHead: LaserHead) {
+    console.log("TopRightMirror: overlapLaserCallback");
+    if (laserHead instanceof LaserHead) {
       // vertical lasers can only pass if coming from top (heading down):
-      if (laser.direction === LaserDirection.DOWN) {
+      if (laserHead.direction === LaserDirection.DOWN) {
         this.scene.events.emit(
           EVENTS.dirChange,
           LaserDirection.RIGHT,
           this,
-          laser
+          laserHead
         );
-      } else {
-        this.scene.events.emit(EVENTS.blockHit, this, laser);
       }
-    } else if (laser instanceof HLaser) {
       // horizontal lasers can only pass if coming from right (heading left):
-      if (laser.direction === LaserDirection.LEFT) {
+      else if (laserHead.direction === LaserDirection.LEFT) {
         this.scene.events.emit(
           EVENTS.dirChange,
           LaserDirection.UP,
           this,
-          laser
+          laserHead
         );
       } else {
-        this.scene.events.emit(EVENTS.blockHit, this, laser);
+        this.scene.events.emit(EVENTS.blockHit, this, laserHead);
       }
     }
   }

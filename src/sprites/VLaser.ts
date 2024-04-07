@@ -1,5 +1,6 @@
-import Laser, { LaserDirection } from "./Laser";
-import { TILE_SIZE, GAME_IMAGES, LASER_WIDTH } from "../Constants";
+import Laser from "./Laser";
+import { GAME_IMAGES, LASER_WIDTH } from "../Constants";
+import LaserDirection from "../lib/LaserDirection";
 
 export default class VLaser extends Laser {
   protected _direction: LaserDirection.DOWN | LaserDirection.UP;
@@ -17,19 +18,5 @@ export default class VLaser extends Laser {
 
   public get direction(): LaserDirection {
     return this._direction;
-  }
-
-  public grow(amount: number): void {
-    this.height += amount * this.growFactor;
-  }
-
-  public get head(): Phaser.Geom.Point {
-    if (this.direction === LaserDirection.DOWN) {
-      // return the head x/y point of this laser when pointing down:
-      return new Phaser.Geom.Point(this.x, this.y + this.height);
-    } else {
-      // return the head x/y point of this laser when pointing up:
-      return new Phaser.Geom.Point(this.x, this.y - this.height);
-    }
   }
 }

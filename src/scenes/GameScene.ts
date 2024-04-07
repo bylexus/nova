@@ -1,14 +1,14 @@
 import { Scene } from "phaser";
 import {
   TILE_SIZE,
-  GAME_IMAGES as GAME_IMAGES,
+  GAME_IMAGES,
   EVENTS,
   GAME_TILEMAPS,
   GAME_SPRITESHEETS,
 } from "../Constants";
 import HLaser from "../sprites/HLaser";
 import VLaser from "../sprites/VLaser";
-import Laser, { LaserDirection } from "../sprites/Laser";
+import Laser from "../sprites/Laser";
 import TopLeftMirror from "../sprites/TopLeftMirror";
 import BottomRightMirror from "../sprites/BottomRightMirror";
 import BottomLeftMirror from "../sprites/BottomLeftMirror";
@@ -22,9 +22,12 @@ import TimedBlock from "../sprites/TimedBlock";
 import LaserCannon from "../sprites/LaserCannon";
 import Target from "../sprites/Target";
 import AvailableTilesCounter from "../components/AvailableTilesCounter";
+import LaserDirection from "../lib/LaserDirection";
+import LaserHead from "../sprites/LaserHead";
 
 export class GameScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
+  private laserHeads: Phaser.GameObjects.Group | null = null;
   private blocks: Phaser.GameObjects.Group | null = null;
   private selectOverlay: Phaser.GameObjects.Group | null = null;
   private laserLayer: Phaser.GameObjects.Layer | null = null;
@@ -51,6 +54,10 @@ export class GameScene extends Scene {
     if (this.lasers) {
       this.lasers.destroy(true, true);
       this.lasers = null;
+    }
+    if (this.laserHeads) {
+      this.laserHeads.destroy(true, true);
+      this.laserHeads = null;
     }
     if (this.blocks) {
       this.blocks.destroy(true, true);
@@ -95,8 +102,6 @@ export class GameScene extends Scene {
   }
 
   create() {
-    // this.events.removeAllListeners();
-
     console.log("Main scene created");
 
     const map = this.make.tilemap({ key: GAME_TILEMAPS.level00.key });
@@ -106,6 +111,7 @@ export class GameScene extends Scene {
     this.uiLayer = this.add.layer().setDepth(3);
 
     this.lasers = this.add.group();
+    this.laserHeads = this.add.group();
     this.blocks = this.add.group();
     this.selectOverlay = this.add.group();
 
@@ -114,40 +120,55 @@ export class GameScene extends Scene {
     this.setupTileSelectOverlay(map);
 
     // Setup event listeners
-    this.events.addListener(EVENTS.blockHit, (block: Block, laser: Laser) => {
-      laser.setActive(false);
-      this.checkGameEnd();
-    });
+    // Solid block hit:
+    this.events.addListener(
+      EVENTS.blockHit,
+      (_block: Block, laserHead: LaserHead) => {
+        this.stopHead(laserHead);
+        this.checkGameEnd();
+      }
+    );
+
+    // mirror change through diagonal mirror:
     this.events.addListener(
       EVENTS.dirChange,
       this.laserDirChangedEvent.bind(this)
     );
+
+    // split mirror hit:
     this.events.addListener(
       EVENTS.mirrorBallHit,
       this.mirrorBallHitEvent.bind(this)
     );
+
+    // laser head hits laser:
     this.events.addListener(
       EVENTS.laserHit,
-      (otherLaser: Laser, thisLaser: Laser) => {
-        console.log("Laser hit laser");
+      (laserHead: LaserHead, _laserBeam: Laser) => {
+        console.log("Laser hit laser beam");
         // check if the overlap happened within a cross tile:
-        let head = thisLaser.head;
-        let crossBlock = this.findCrossBlockAt(head);
+        let crossBlock = this.findCrossBlockAt(
+          new Phaser.Geom.Point(laserHead.x, laserHead.y)
+        );
         if (crossBlock) {
-          console.log('yes, cross');
+          console.log("yes, cross");
         } else {
-          console.log('no cross');
-          otherLaser.setActive(false);
-          thisLaser.setActive(false);
+          console.log("no cross");
+          this.stopHead(laserHead);
           this.checkGameEnd();
         }
       }
     );
 
-    this.events.addListener(EVENTS.targetReached, (_: Target, laser: Laser) => {
-      laser.setActive(false);
-      this.checkGameEnd();
-    });
+    // Laser head hit target
+    this.events.addListener(
+      EVENTS.targetReached,
+      (_: Target, laserHead: LaserHead) => {
+        console.log("Target reached");
+        this.stopHead(laserHead);
+        this.checkGameEnd();
+      }
+    );
 
     this.events.addListener(EVENTS.tileSelected, (type: string) => {
       console.log("Tile selected: " + type);
@@ -159,62 +180,59 @@ export class GameScene extends Scene {
   laserDirChangedEvent(
     newDir: LaserDirection,
     block: Block,
-    laser: Laser
+    laserHead: LaserHead
   ): void {
-    laser.setActive(false);
-    this.laserDirChanged(laser, newDir, block);
+    this.laserDirChanged(laserHead, newDir, block);
   }
 
-  mirrorBallHitEvent(block: Block, laser: Laser): void {
-    laser.setActive(false);
-    let nl1: Laser | null = null;
-    let nl2: Laser | null = null;
-    switch (laser.direction) {
+  mirrorBallHitEvent(block: Block, laserHead: LaserHead): void {
+    this.stopHead(laserHead);
+    let nl1: LaserHead | null = null;
+    let nl2: LaserHead | null = null;
+    switch (laserHead.direction) {
       case LaserDirection.DOWN:
-        nl1 = this.laserDirChanged(laser, LaserDirection.LEFT, block);
-        nl1?.setY(snapToHalfGrid(laser.y + laser.height + TILE_SIZE / 2));
-        nl2 = this.laserDirChanged(laser, LaserDirection.RIGHT, block);
-        nl2?.setY(snapToHalfGrid(laser.y + laser.height + TILE_SIZE / 2));
-        break;
       case LaserDirection.UP:
-        nl1 = this.laserDirChanged(laser, LaserDirection.LEFT, block);
-        nl1?.setY(snapToHalfGrid(laser.y - laser.height - TILE_SIZE / 2));
-        nl2 = this.laserDirChanged(laser, LaserDirection.RIGHT, block);
-        nl2?.setY(snapToHalfGrid(laser.y - laser.height - TILE_SIZE / 2));
+        nl1 = this.startLaserHead(
+          LaserDirection.LEFT,
+          snapToHalfGrid(block.x - TILE_SIZE / 2),
+          snapToHalfGrid(block.y)
+        );
+        nl2 = this.startLaserHead(
+          LaserDirection.RIGHT,
+          snapToHalfGrid(block.x + TILE_SIZE / 2),
+          snapToHalfGrid(block.y)
+        );
         break;
       case LaserDirection.LEFT:
-        nl1 = this.laserDirChanged(laser, LaserDirection.UP, block);
-        nl1?.setX(snapToHalfGrid(laser.x - laser.width - TILE_SIZE / 2));
-        nl2 = this.laserDirChanged(laser, LaserDirection.DOWN, block);
-        nl2?.setX(snapToHalfGrid(laser.x - laser.width - TILE_SIZE / 2));
-        break;
       case LaserDirection.RIGHT:
-        nl1 = this.laserDirChanged(laser, LaserDirection.UP, block);
-        nl1?.setX(snapToHalfGrid(laser.x + laser.width + TILE_SIZE / 2));
-        nl2 = this.laserDirChanged(laser, LaserDirection.DOWN, block);
-        nl2?.setX(snapToHalfGrid(laser.x + laser.width + TILE_SIZE / 2));
+        nl1 = this.startLaserHead(
+          LaserDirection.UP,
+          snapToHalfGrid(block.x),
+          snapToHalfGrid(block.y - TILE_SIZE / 2)
+        );
+        nl2 = this.startLaserHead(
+          LaserDirection.DOWN,
+          snapToHalfGrid(block.x),
+          snapToHalfGrid(block.y + TILE_SIZE / 2)
+        );
         break;
     }
-    if (nl1 && nl2) {
-      nl1.addSeenLaser(nl2);
-      nl2.addSeenLaser(nl1);
+    if (nl1) {
+      block.addSeenLaserHead(nl1);
+    }
+    if (nl2) {
+      block.addSeenLaserHead(nl2);
     }
   }
 
   laserDirChanged(
-    actLaser: Laser,
+    laserHead: LaserHead,
     newDir: LaserDirection,
-    sourceBlock: Block | null
+    _sourceBlock: Block | null
   ): Laser | null {
-    let newLaserPart = this.turnLaser(actLaser, newDir);
+    console.log("Laser dir changed: " + newDir);
+    let newLaserPart = this.turnLaser(laserHead, newDir);
     if (newLaserPart) {
-      // The new laser is positioned so that it is in the collission zone
-      // of the block that caused a new laser piece: so we
-      // don't process a collision with the new laser piece, the laser should
-      // be able to depart from the actual block:
-      if (sourceBlock) {
-        sourceBlock.addSeenLaser(newLaserPart);
-      }
       this.lasers?.add(newLaserPart);
       return newLaserPart;
     }
@@ -222,41 +240,58 @@ export class GameScene extends Scene {
   }
 
   /**
-   * This method is called when a laser bumps into a direction changing
-   * mirror. It ends here, and emits a new laser in the new (given)
-   * direction
+   * This method is called when a laser head bumps into a direction changing
+   * mirror. It ends here, and emits a new laser beam in the new (given)
+   * direction, while changing the head's moving direction
    *
-   * @param oldLaser
+   * @param laserHead
    * @param newDir
    * @returns
    */
-  turnLaser(oldLaser: Laser, newDir: LaserDirection): Laser | null {
-    let x: number = oldLaser.x,
-      y: number = oldLaser.y;
-    switch (oldLaser.direction) {
-      case LaserDirection.LEFT:
-        x = oldLaser.x - oldLaser.width;
-        break;
-      case LaserDirection.RIGHT:
-        x = oldLaser.x + oldLaser.width;
-        break;
-      case LaserDirection.UP:
-        y = oldLaser.y - oldLaser.height;
-        break;
-      case LaserDirection.DOWN:
-        y = oldLaser.y + oldLaser.height;
-        break;
-    }
-    oldLaser.setActive(false);
+  turnLaser(laserHead: LaserHead, newDir: LaserDirection): Laser | null {
+    // snap laser head to grid:
+    laserHead.setX(snapToHalfGrid(laserHead.x));
+    laserHead.setY(snapToHalfGrid(laserHead.y));
+    let x: number = laserHead.x,
+      y: number = laserHead.y;
+
+    // switch head direction:
+    laserHead.direction = newDir;
+    laserHead.startMoving();
+
+    // switch (laserHead.direction) {
+    //   case LaserDirection.LEFT:
+    //     x = laserHead.x - laserHead.width;
+    //     break;
+    //   case LaserDirection.RIGHT:
+    //     x = laserHead.x + laserHead.width;
+    //     break;
+    //   case LaserDirection.UP:
+    //     y = laserHead.y - laserHead.height;
+    //     break;
+    //   case LaserDirection.DOWN:
+    //     y = laserHead.y + laserHead.height;
+    //     break;
+    // }
+    // oldLaser.setActive(false);
     // important: remove collider on now inactive laser:
     // only the head laser should have a collider:
-    oldLaser.removeLaserCollider();
-
+    // oldLaser.removeLaserCollider();
+    // setTimeout(() => {
+    // }, 20);
+    const newBeam = this.startNewLaserBeam(laserHead, x, y);
+    return newBeam;
+  }
+  protected startNewLaserBeam(
+    laserHead: LaserHead,
+    x: number,
+    y: number
+  ): Laser {
     let newLaser: Laser;
     // snap new laser to grid:
     x = snapToHalfGrid(x);
     y = snapToHalfGrid(y);
-    switch (newDir) {
+    switch (laserHead.direction) {
       case LaserDirection.LEFT:
         newLaser = new HLaser(this, x, y, LaserDirection.LEFT);
         break;
@@ -271,13 +306,17 @@ export class GameScene extends Scene {
         break;
     }
 
-    // The new laser marks the old/source laser as 'seen', so that
-    // no overlap collision is detected: The new laser touches the
-    // old laser, as it starts at the end point of the old laser:
-    newLaser.addSeenLaser(oldLaser);
+    // The new laser beam is added to the head's tailBeams array, to track
+    // collission later:
+    laserHead.tailBeams.push(newLaser);
+
+    // The new laser beam marks the laser head as 'seen', so that it
+    // does not collide with its own beam.
+    // newLaser.addSeenLaserHead(laserHead);
     // ... and we attach a laser collider to the new laser to detect
     // when other lasers bump into it:
-    newLaser.configureLaserCollider(this.lasers!);
+    newLaser.configureLaserHeadCollider(this.laserHeads!);
+    this.lasers?.add(newLaser);
     return newLaser;
   }
 
@@ -336,10 +375,11 @@ export class GameScene extends Scene {
 
     map.getLayer("Blocks")!.data.forEach((line: Phaser.Tilemaps.Tile[]) => {
       line.forEach((tile: Phaser.Tilemaps.Tile) => {
-        const tileType = tileset.getTileData(
-          (tile as Phaser.Tilemaps.Tile).index
-        )?.type;
-        this.addBlock(tileType!, tile.x * TILE_SIZE, tile.y * TILE_SIZE);
+        const tileType = (<{ type: string }>tileset.getTileData(tile.index))
+          ?.type;
+        if (tileType) {
+          this.addBlock(tileType, tile.x * TILE_SIZE, tile.y * TILE_SIZE);
+        }
       });
     });
   }
@@ -387,33 +427,32 @@ export class GameScene extends Scene {
         sprite = new TimedBlock(this, x, y);
         break;
       case "LaserStartDown":
-        sprite = new LaserCannon(this, x, y, "down");
+        sprite = new LaserCannon(this, x, y, LaserDirection.DOWN);
         break;
       case "LaserStartUp":
-        sprite = new LaserCannon(this, x, y, "up");
+        sprite = new LaserCannon(this, x, y, LaserDirection.UP);
         break;
       case "LaserStartLeft":
-        sprite = new LaserCannon(this, x, y, "left");
+        sprite = new LaserCannon(this, x, y, LaserDirection.LEFT);
         break;
       case "LaserStartRight":
-        sprite = new LaserCannon(this, x, y, "right");
+        sprite = new LaserCannon(this, x, y, LaserDirection.RIGHT);
         break;
       case "TargetUp":
-        sprite = new Target(this, x, y, "up");
+        sprite = new Target(this, x, y, LaserDirection.UP);
         break;
       case "TargetDown":
-        sprite = new Target(this, x, y, "down");
+        sprite = new Target(this, x, y, LaserDirection.DOWN);
         break;
-      // fill the cases for left and right:
       case "TargetLeft":
-        sprite = new Target(this, x, y, "left");
+        sprite = new Target(this, x, y, LaserDirection.LEFT);
         break;
       case "TargetRight":
-        sprite = new Target(this, x, y, "right");
+        sprite = new Target(this, x, y, LaserDirection.RIGHT);
         break;
     }
     if (sprite) {
-      sprite.configureLaserCollider(this.lasers!);
+      sprite.configureLaserHeadCollider(this.laserHeads!);
       this.blocks!.add(sprite);
       this.blockLayer!.add(sprite);
     }
@@ -470,7 +509,7 @@ export class GameScene extends Scene {
             // - at the clicked position is nothing
             selection.on(
               Phaser.Input.Events.POINTER_DOWN,
-              (e: Phaser.Input.Pointer, x: number, y: number) => {
+              (e: Phaser.Input.Pointer, _x: number, _y: number) => {
                 if (this.state !== "stopped") {
                   return;
                 }
@@ -522,39 +561,40 @@ export class GameScene extends Scene {
       return;
     }
     this.lasers?.clear(true, true);
+    this.laserHeads?.clear(true, true);
     this.laserLayer!.removeAll();
     this.blocks!.getChildren().forEach((block) => {
       if (block instanceof LaserCannon) {
-        let laser: Laser;
-        switch (block.direction) {
-          case "down":
-            laser = new VLaser(this, block.x, block.y, LaserDirection.DOWN);
-            break;
-          case "up":
-            laser = new VLaser(this, block.x, block.y, LaserDirection.UP);
-            break;
-          case "right":
-            laser = new HLaser(this, block.x, block.y, LaserDirection.RIGHT);
-            break;
-          case "left":
-            laser = new HLaser(this, block.x, block.y, LaserDirection.LEFT);
-            break;
-        }
-        block.addSeenLaser(laser);
-        laser.configureLaserCollider(this.lasers!);
-        this.lasers!.add(laser);
-        this.laserLayer!.add(laser);
+        const laserHead = this.startLaserHead(
+          block.direction,
+          block.x,
+          block.y
+        );
+        block.addSeenLaserHead(laserHead);
       }
     });
     this.state = "running";
   }
 
+  protected startLaserHead(
+    dir: LaserDirection,
+    x: number,
+    y: number
+  ): LaserHead {
+    let laserHead: LaserHead = new LaserHead(this, x, y, dir);
+    this.laserHeads!.add(laserHead);
+    this.laserLayer!.add(laserHead);
+    this.startNewLaserBeam(laserHead, x, y);
+    laserHead.startMoving();
+    return laserHead;
+  }
+
   protected checkGameEnd() {
     let allLasersStopped = true;
     let allTargetsReached = true;
-    this.lasers?.getChildren().forEach((laser) => {
-      if (laser instanceof Laser) {
-        if (laser.active) {
+    this.laserHeads?.getChildren().forEach((laserHead) => {
+      if (laserHead instanceof LaserHead) {
+        if (laserHead.active) {
           allLasersStopped = false;
           return false;
         }
@@ -571,7 +611,6 @@ export class GameScene extends Scene {
 
     if (allTargetsReached) {
       this.scene.pause(this);
-      this.scene.setActive(false, this);
       console.log("============= YOU WIN !!! =============");
       this.scene.launch("GameEndScene", {
         text: "YOU WIN !!!",
@@ -580,6 +619,7 @@ export class GameScene extends Scene {
         },
       });
     } else if (allLasersStopped) {
+      this.scene.pause(this);
       console.log("============= YOU LOSE !!! =============");
       this.scene.launch("GameEndScene", {
         text: "YOU LOOSE !!!",
@@ -592,7 +632,10 @@ export class GameScene extends Scene {
 
   protected restartLevel() {
     this.scene.restart();
-    // this.scene.pause(this);
-    // this.scene.launch("GameEndScene");
+  }
+
+  protected stopHead(laserHead: LaserHead) {
+    laserHead.setActive(false);
+    laserHead.stopMoving();
   }
 }

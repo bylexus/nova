@@ -19,11 +19,11 @@
             "scaleInEditor": 1
         },
         "levels/level-00.tmx": {
-            "scale": 0.85,
+            "scale": 0.5953,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 538.2352941176471,
-                "y": 391.764705882353
+                "x": 509.8269779942885,
+                "y": 446.8335293129514
             }
         },
         "levels/level-00.tmx#tileset": {
@@ -49,8 +49,8 @@
     "project": "levels.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "tileset.tsx",
         "levels/level-00.tmx",
+        "tileset.tsx",
         "blocks.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",

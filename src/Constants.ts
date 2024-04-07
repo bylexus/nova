@@ -5,6 +5,7 @@ export const LASER_GROW_SPEED = 150; // as in 150 px per second
 export const GAME_IMAGES = {
   laserH: { key: "laser-h", url: "assets/laser-horiz-1px.png" },
   laserV: { key: "laser-v", url: "assets/laser-vert-1px.png" },
+  laserHead: { key: "laserHead", url: "assets/020-laser-head.png" },
   tileSelect: { key: "tileSelect", url: "assets/017-tile-select.png" },
   startBtn: { key: "startBtn", url: "assets/018-start-btn.png" },
   resetBtn: { key: "resetBtn", url: "assets/019-reset-btn.png" },
