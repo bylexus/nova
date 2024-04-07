@@ -25,6 +25,7 @@ import AvailableTilesCounter from "../components/AvailableTilesCounter";
 import LaserDirection from "../lib/LaserDirection";
 import LaserHead from "../sprites/LaserHead";
 import GameEndStatus from "../lib/GameEndStatus";
+import ForbiddenBlock from "../sprites/ForbiddenBlock";
 
 export class GameScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
@@ -105,7 +106,7 @@ export class GameScene extends Scene {
   create() {
     console.log("Main scene created");
 
-    const map = this.make.tilemap({ key: GAME_TILEMAPS.level03.key });
+    const map = this.make.tilemap({ key: GAME_TILEMAPS.level04.key });
 
     this.laserLayer = this.add.layer().setDepth(1);
     this.blockLayer = this.add.layer().setDepth(2);
@@ -374,6 +375,7 @@ export class GameScene extends Scene {
 
   protected setupBlocks(map: Phaser.Tilemaps.Tilemap) {
     const tileset = map.getTileset("tileset")!;
+    console.log(tileset);
 
     map.getLayer("Blocks")!.data.forEach((line: Phaser.Tilemaps.Tile[]) => {
       line.forEach((tile: Phaser.Tilemaps.Tile) => {
@@ -451,6 +453,10 @@ export class GameScene extends Scene {
         break;
       case "TargetRight":
         sprite = new Target(this, x, y, LaserDirection.RIGHT);
+        break;
+      case "ForbiddenBlock":
+        console.log('forbidden block draw')
+        sprite = new ForbiddenBlock(this, x, y);
         break;
     }
     if (sprite) {

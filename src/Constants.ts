@@ -9,6 +9,7 @@ export const GAME_IMAGES = {
   tileSelect: { key: "tileSelect", url: "assets/017-tile-select.png" },
   startBtn: { key: "startBtn", url: "assets/018-start-btn.png" },
   resetBtn: { key: "resetBtn", url: "assets/019-reset-btn.png" },
+  forbiddenBlock: { key: "forbidden-block", url: "assets/021-forbidden-block.png" },
   tileset: { key: "tileset", url: "assets/tileset.png" },
 };
 
@@ -18,7 +19,10 @@ export const GAME_SPRITESHEETS = {
 
 export const GAME_TILEMAPS = {
   level00: { key: "level-00", url: "assets/levels/level-00.json" },
+  level01: { key: "level-01", url: "assets/levels/level-01.json" },
+  level02: { key: "level-02", url: "assets/levels/level-02.json" },
   level03: { key: "level-03", url: "assets/levels/level-03.json" },
+  level04: { key: "level-04", url: "assets/levels/level-04.json" },
 };
 
 export const EVENTS = {

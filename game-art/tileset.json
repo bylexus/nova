@@ -4,7 +4,7 @@
 			"image": "tileset.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 768,
+				"w": 816,
 				"h": 48
 			},
 			"scale": 1,
@@ -408,6 +408,31 @@
 						"x": 0.5,
 						"y": 0.5
 					}
+				},
+				{
+					"filename": "021-forbidden-block.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"frame": {
+						"x": 768,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
 				}
 			]
 		}
@@ -415,6 +440,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:11262c96714923e2f511a9f38f87c1cc:7307b5b1df6449e45e69f00cfbfe3d26:ace0e5e82375743ccde85e973fd84fb5$"
+		"smartupdate": "$TexturePacker:SmartUpdate:7b7d108b9d07374283ccbe494150d8dd:191641ff4cc327d3b8dd7073a26adb49:ace0e5e82375743ccde85e973fd84fb5$"
 	}
 }

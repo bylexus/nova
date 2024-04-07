@@ -189,6 +189,7 @@
             <key type="filename">014-target-right.png</key>
             <key type="filename">015-target-down.png</key>
             <key type="filename">016-target-left.png</key>
+            <key type="filename">021-forbidden-block.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -226,6 +227,7 @@
                     <filename>014-target-right.png</filename>
                     <filename>015-target-down.png</filename>
                     <filename>016-target-left.png</filename>
+                    <filename>021-forbidden-block.png</filename>
                 </array>
             </struct>
         </map>
