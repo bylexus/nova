@@ -20,7 +20,7 @@
         },
         "levels/level-00.tmx": {
             "scale": 0.5953,
-            "selectedLayer": 2,
+            "selectedLayer": -1,
             "viewCenter": {
                 "x": 510.666890643373,
                 "y": 446.8335293129514
@@ -32,7 +32,7 @@
         },
         "levels/level-01.tmx": {
             "scale": 0.7558531746031745,
-            "selectedLayer": 2,
+            "selectedLayer": -1,
             "viewCenter": {
                 "x": 504.06615041344014,
                 "y": 384.99540622128893
@@ -61,11 +61,12 @@
             }
         },
         "levels/level-03.tmx#tileset": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "levels/level-04.tmx": {
             "scale": 0.75,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
                 "x": 499.99999999999994,
                 "y": 522.6666666666666
@@ -97,11 +98,11 @@
     "project": "levels.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "levels/level-01.tmx",
+        "levels/level-02.tmx",
+        "levels/level-03.tmx",
         "levels/level-04.tmx",
         "levels/level-00.tmx",
-        "levels/level-02.tmx",
-        "levels/level-01.tmx",
-        "levels/level-03.tmx",
         "tileset.tsx",
         "blocks.tsx"
     ],
