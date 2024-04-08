@@ -1,13 +1,13 @@
-import { EVENTS, GAME_SPRITESHEETS } from "../Constants";
+import { EVENTS, GAME_IMAGES } from "../Constants";
 import LaserDirection from "../lib/LaserDirection";
 import Block from "./Block";
 import LaserHead from "./LaserHead";
 
-const DirectionFrameMap = {
-  up: 11,
-  right: 10,
-  left: 9,
-  down: 8,
+const DirectionImgMap = {
+  [LaserDirection.UP]: GAME_IMAGES.laserUp,
+  [LaserDirection.RIGHT]: GAME_IMAGES.laserRight,
+  [LaserDirection.LEFT]: GAME_IMAGES.laserLeft,
+  [LaserDirection.DOWN]: GAME_IMAGES.laserDown,
 };
 export default class LaserCannon extends Block {
   public direction: LaserDirection;
@@ -18,8 +18,8 @@ export default class LaserCannon extends Block {
     y: number,
     direction: LaserDirection
   ) {
-    const frame = DirectionFrameMap[direction];
-    super(scene, x, y, GAME_SPRITESHEETS.spritesheet.key, frame);
+    const img = DirectionImgMap[direction];
+    super(scene, x, y, img.key);
     this.direction = direction;
   }
 

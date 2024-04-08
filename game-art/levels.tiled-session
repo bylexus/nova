@@ -20,13 +20,14 @@
         },
         "levels/level-00.tmx": {
             "scale": 0.5953,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
                 "x": 510.666890643373,
                 "y": 446.8335293129514
             }
         },
         "levels/level-00.tmx#tileset": {
+            "dynamicWrapping": false,
             "scaleInDock": 1
         },
         "levels/level-01.tmx": {
@@ -64,10 +65,10 @@
         },
         "levels/level-04.tmx": {
             "scale": 0.75,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 502.66666666666663,
-                "y": 382.66666666666663
+                "x": 499.99999999999994,
+                "y": 522.6666666666666
             }
         },
         "levels/level-04.tmx#tileset": {
@@ -81,9 +82,9 @@
             "scaleInEditor": 1
         }
     },
-    "last.exportedFilePath": "/Users/alex/dev/nova/game-art/levels",
+    "last.exportedFilePath": "/Users/alex/dev/nova/public/assets/levels",
     "last.externalTilesetPath": "/Users/alex/dev/nova/game-art",
-    "last.imagePath": "/Users/alex/dev/nova/game-art",
+    "last.imagePath": "/Users/alex/dev/nova/public/assets",
     "map.height": 16,
     "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
@@ -94,16 +95,17 @@
         "levels/level-00.tmx"
     ],
     "project": "levels.tiled-project",
-    "property.type": "int",
+    "property.type": "string",
     "recentFiles": [
+        "levels/level-04.tmx",
         "levels/level-00.tmx",
         "levels/level-02.tmx",
         "levels/level-01.tmx",
         "levels/level-03.tmx",
-        "levels/level-04.tmx",
         "tileset.tsx",
         "blocks.tsx"
     ],
+    "tileset.embedInMap": true,
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

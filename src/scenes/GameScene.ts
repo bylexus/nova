@@ -31,6 +31,7 @@ export class GameScene extends Scene {
   private lasers: Phaser.GameObjects.Group | null = null;
   private laserHeads: Phaser.GameObjects.Group | null = null;
   private blocks: Phaser.GameObjects.Group | null = null;
+  private uiGroup: Phaser.GameObjects.Group | null = null;
   private selectOverlay: Phaser.GameObjects.Group | null = null;
   private laserLayer: Phaser.GameObjects.Layer | null = null;
   private blockLayer: Phaser.GameObjects.Layer | null = null;
@@ -52,6 +53,7 @@ export class GameScene extends Scene {
     this.events.removeListener(EVENTS.mirrorBallHit);
     this.events.removeListener(EVENTS.targetReached);
     this.events.removeListener(EVENTS.tileSelected);
+    this.events.removeListener(EVENTS.allTilesUsed);
 
     if (this.lasers) {
       this.lasers.destroy(true, true);
@@ -106,7 +108,7 @@ export class GameScene extends Scene {
   create() {
     console.log("Main scene created");
 
-    const map = this.make.tilemap({ key: GAME_TILEMAPS.level04.key });
+    const map = this.make.tilemap({ key: GAME_TILEMAPS.level00.key });
 
     this.laserLayer = this.add.layer().setDepth(1);
     this.blockLayer = this.add.layer().setDepth(2);
@@ -115,6 +117,7 @@ export class GameScene extends Scene {
     this.lasers = this.add.group();
     this.laserHeads = this.add.group();
     this.blocks = this.add.group();
+    this.uiGroup = this.add.group();
     this.selectOverlay = this.add.group();
 
     this.blockCounter = this.setupInfoArea(map);
@@ -174,6 +177,9 @@ export class GameScene extends Scene {
 
     this.events.addListener(EVENTS.tileSelected, (type: string) => {
       console.log("Tile selected: " + type);
+    });
+    this.events.addListener(EVENTS.allTilesUsed, (_type: string) => {
+      this.startLasers();
     });
 
     this.state = "stopped";
@@ -262,26 +268,6 @@ export class GameScene extends Scene {
     laserHead.direction = newDir;
     laserHead.startMoving();
 
-    // switch (laserHead.direction) {
-    //   case LaserDirection.LEFT:
-    //     x = laserHead.x - laserHead.width;
-    //     break;
-    //   case LaserDirection.RIGHT:
-    //     x = laserHead.x + laserHead.width;
-    //     break;
-    //   case LaserDirection.UP:
-    //     y = laserHead.y - laserHead.height;
-    //     break;
-    //   case LaserDirection.DOWN:
-    //     y = laserHead.y + laserHead.height;
-    //     break;
-    // }
-    // oldLaser.setActive(false);
-    // important: remove collider on now inactive laser:
-    // only the head laser should have a collider:
-    // oldLaser.removeLaserCollider();
-    // setTimeout(() => {
-    // }, 20);
     const newBeam = this.startNewLaserBeam(laserHead, x, y);
     return newBeam;
   }
@@ -320,6 +306,7 @@ export class GameScene extends Scene {
     // when other lasers bump into it:
     newLaser.configureLaserHeadCollider(this.laserHeads!);
     this.lasers?.add(newLaser);
+    this.laserLayer?.add(newLaser);
     return newLaser;
   }
 
@@ -335,14 +322,17 @@ export class GameScene extends Scene {
   }
 
   protected setupInfoArea(map: Phaser.Tilemaps.Tilemap): AvailableTilesCounter {
+    this.uiGroup?.clear(true, true);
+
     // draw the block tiles:
     const tileset = map.addTilesetImage("tileset", "tileset");
     const layer = map.createLayer("Info", tileset!, 0, 0)!;
     this.uiLayer!.add(layer);
+    this.uiGroup?.add(layer);
 
     // setup counters
     const tilesCounter = new AvailableTilesCounter(this, this.uiLayer!, layer);
-    tilesCounter.setupScene();
+    tilesCounter.setupScene(this.uiGroup!);
 
     // add start btn:
     const startBtn = this.add.sprite(
@@ -356,6 +346,7 @@ export class GameScene extends Scene {
     startBtn.on(Phaser.Input.Events.POINTER_OUT, () => startBtn.setAlpha(0.5));
     startBtn.on(Phaser.Input.Events.POINTER_UP, () => this.startLasers());
     this.uiLayer!.add(startBtn);
+    this.uiGroup?.add(startBtn);
 
     // add reset btn:
     const resetBtn = this.add.sprite(
@@ -369,13 +360,13 @@ export class GameScene extends Scene {
     resetBtn.on(Phaser.Input.Events.POINTER_OUT, () => resetBtn.setAlpha(0.5));
     resetBtn.on(Phaser.Input.Events.POINTER_UP, () => this.restartLevel());
     this.uiLayer!.add(resetBtn);
+    this.uiGroup?.add(resetBtn);
 
     return tilesCounter;
   }
 
   protected setupBlocks(map: Phaser.Tilemaps.Tilemap) {
     const tileset = map.getTileset("tileset")!;
-    console.log(tileset);
 
     map.getLayer("Blocks")!.data.forEach((line: Phaser.Tilemaps.Tile[]) => {
       line.forEach((tile: Phaser.Tilemaps.Tile) => {
@@ -455,7 +446,6 @@ export class GameScene extends Scene {
         sprite = new Target(this, x, y, LaserDirection.RIGHT);
         break;
       case "ForbiddenBlock":
-        console.log('forbidden block draw')
         sprite = new ForbiddenBlock(this, x, y);
         break;
     }
@@ -571,17 +561,24 @@ export class GameScene extends Scene {
     this.lasers?.clear(true, true);
     this.laserHeads?.clear(true, true);
     this.laserLayer!.removeAll();
-    this.blocks!.getChildren().forEach((block) => {
-      if (block instanceof LaserCannon) {
-        const laserHead = this.startLaserHead(
-          block.direction,
-          block.x,
-          block.y
-        );
-        block.addSeenLaserHead(laserHead);
-      }
-    });
     this.state = "running";
+    this.tweens.add({
+      targets: this.uiGroup?.getChildren(),
+      alpha: 0,
+      duration: 250,
+      onComplete: () => {
+        this.blocks!.getChildren().forEach((block) => {
+          if (block instanceof LaserCannon) {
+            const laserHead = this.startLaserHead(
+              block.direction,
+              block.x,
+              block.y
+            );
+            block.addSeenLaserHead(laserHead);
+          }
+        });
+      },
+    });
   }
 
   protected startLaserHead(

@@ -1,11 +1,11 @@
-import { EVENTS, GAME_SPRITESHEETS } from "../Constants";
+import { EVENTS, GAME_IMAGES } from "../Constants";
 import LaserDirection from "../lib/LaserDirection";
 import Block from "./Block";
 import LaserHead from "./LaserHead";
 
 export default class TopRightMirror extends Block {
   constructor(scene: Phaser.Scene, x: number, y: number) {
-    super(scene, x, y, GAME_SPRITESHEETS.spritesheet.key, 6);
+    super(scene, x, y, GAME_IMAGES.mirrorTR.key);
 
     // physics body is half the size of the sprite, to collide ad the center of the triangle's
     // hypotheneus

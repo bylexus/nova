@@ -1,4 +1,4 @@
-import { EVENTS, GAME_IMAGES, TILE_SIZE } from "../Constants";
+import { EVENTS, TILE_SIZE } from "../Constants";
 
 export default class AvailableTilesCounter {
   protected scene: Phaser.Scene;
@@ -6,6 +6,7 @@ export default class AvailableTilesCounter {
   protected availableBlocksLayer: Phaser.Tilemaps.TilemapLayer;
   protected blockCountMap = new Map<string, number>();
   protected blockTextMap = new Map<string, Phaser.GameObjects.Text>();
+  protected totalTiles: number = 0;
   protected selectionRect: Phaser.GameObjects.Rectangle;
   protected selectedTile: string | null = null;
 
@@ -28,7 +29,7 @@ export default class AvailableTilesCounter {
     this.selectionRect.setVisible(false);
   }
 
-  public setupScene() {
+  public setupScene(uiGroup: Phaser.GameObjects.Group) {
     // configure interaction listeners to select a tile
     this.availableBlocksLayer.setInteractive();
     this.availableBlocksLayer.on("pointerdown", this.onPointerClick, this);
@@ -40,34 +41,50 @@ export default class AvailableTilesCounter {
       }
     });
 
+    // Available blocks counters:
+    let lastBlockX = 0;
     this.availableBlocksLayer.forEachTile((tile: Phaser.Tilemaps.Tile) => {
-      const type = tile.getTileData()?.type;
+      const type = (<{ type: string }>tile.getTileData())?.type;
       if (this.blockCountMap.has(type)) {
         // write the block count as a text object onto the tile:
         const count = this.blockCountMap.get(type)!;
         const tileRect = new Phaser.Geom.Rectangle();
         tile.getBounds(undefined, tileRect);
-        const txtObj = this.scene.add.text(
-          tileRect.x + TILE_SIZE / 2,
-          tileRect.y + TILE_SIZE + 5,
-          `${count}`
-        ).setOrigin(0.5, 0);
+        const txtObj = this.scene.add
+          .text(
+            tileRect.x + TILE_SIZE / 2,
+            tileRect.y + TILE_SIZE + 5,
+            `${count}`
+          )
+          .setOrigin(0.5, 0);
+        lastBlockX = tileRect.x + TILE_SIZE;
         this.uiLayer.add(txtObj);
+        uiGroup.add(txtObj);
         this.blockTextMap.set(type, txtObj);
       }
     });
+
+    // setup max counter:
+    this.totalTiles = this.blockCountMap.get("MaxItems") || 0;
+    const totalTxtObj = this.scene.add.text(
+      lastBlockX + 5,
+      5,
+      `Items left: \n${this.totalTiles}`
+    );
+    uiGroup.add(totalTxtObj);
+    this.blockTextMap.set("TotalItems", totalTxtObj);
   }
 
-  protected onPointerClick(e: Phaser.Input.Pointer, x: number, y: number) {
+  protected onPointerClick(_e: Phaser.Input.Pointer, x: number, y: number) {
     const clickedTile = this.availableBlocksLayer.getTileAtWorldXY(x, y);
     if (clickedTile) {
       this.selectionRect.setX(clickedTile.x * TILE_SIZE + TILE_SIZE / 2);
       this.selectionRect.setY(clickedTile.y * TILE_SIZE + TILE_SIZE / 2);
       this.selectionRect.setVisible(true);
-      this.selectedTile = clickedTile.getTileData()!.type;
+      this.selectedTile = (<{ type: string }>clickedTile.getTileData())!.type;
       this.scene.events.emit(
         EVENTS.tileSelected,
-        clickedTile.getTileData()!.type
+        (<{ type: string }>clickedTile.getTileData())!.type
       );
     }
   }
@@ -84,9 +101,26 @@ export default class AvailableTilesCounter {
 
   public decreaseTile(tileType: string): number {
     if (!this.blockCountMap.has(tileType)) return 0;
-    let actCounter = Math.max(0, (this.blockCountMap.get(tileType) || 0) - 1);
+    if (this.totalTiles <= 0) return 0;
+
+    let actCounter = this.blockCountMap.get(tileType) || 0;
+    if (actCounter > 0) {
+      this.decreaseTotalTiles();
+      actCounter = Math.max(0, actCounter - 1);
+    }
     this.blockCountMap.set(tileType, actCounter);
-	this.blockTextMap.get(tileType)?.setText(`${actCounter}`);
+    this.blockTextMap.get(tileType)?.setText(`${actCounter}`);
     return actCounter;
+  }
+
+  public decreaseTotalTiles(): number {
+    this.totalTiles--;
+    this.blockTextMap
+      .get("TotalItems")
+      ?.setText(`Items left: \n${this.totalTiles}`);
+    if (this.totalTiles === 0) {
+      this.scene.events.emit(EVENTS.allTilesUsed);
+    }
+    return this.totalTiles;
   }
 }

@@ -106,6 +106,11 @@
                  "value":4
                 }, 
                 {
+                 "name":"LevelName",
+                 "type":"string",
+                 "value":"Test"
+                }, 
+                {
                  "name":"TimedBlock",
                  "type":"int",
                  "value":2
@@ -162,15 +167,15 @@
  "tileheight":48,
  "tilesets":[
         {
-         "columns":16,
+         "columns":17,
          "firstgid":1,
          "image":"..\/tileset.png",
          "imageheight":48,
-         "imagewidth":768,
+         "imagewidth":816,
          "margin":0,
          "name":"tileset",
          "spacing":0,
-         "tilecount":16,
+         "tilecount":17,
          "tileheight":48,
          "tiles":[
                 {

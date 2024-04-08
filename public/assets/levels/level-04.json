@@ -21,7 +21,6 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":16,
          "id":4,
-         "locked":true,
          "name":"Play Area",
          "opacity":1,
          "type":"tilelayer",
@@ -76,7 +75,6 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":16,
          "id":5,
-         "locked":true,
          "name":"Info",
          "opacity":1,
          "properties":[
@@ -104,6 +102,11 @@
                  "name":"Cross",
                  "type":"int",
                  "value":1
+                }, 
+                {
+                 "name":"LevelName",
+                 "type":"string",
+                 "value":"Easy Going"
                 }, 
                 {
                  "name":"MaxItems",
@@ -150,7 +153,6 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":16,
          "id":7,
-         "locked":true,
          "name":"SelectionArea",
          "opacity":1,
          "type":"tilelayer",
