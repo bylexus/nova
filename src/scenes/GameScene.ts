@@ -5,6 +5,7 @@ import {
   EVENTS,
   GAME_TILEMAPS,
   GAME_SPRITESHEETS,
+  LEVELS,
 } from "../Constants";
 import HLaser from "../sprites/HLaser";
 import VLaser from "../sprites/VLaser";
@@ -39,8 +40,14 @@ export class GameScene extends Scene {
   private blockCounter: AvailableTilesCounter | null = null;
   private state: "stopped" | "running" | "pause" = "stopped";
 
+  private bootData: {
+    level: { key: string; url: string };
+    levelIndex: number;
+  } | null;
+
   constructor() {
     super("GameScene");
+    this.bootData = null;
   }
 
   init() {
@@ -105,10 +112,12 @@ export class GameScene extends Scene {
     });
   }
 
-  create() {
-    console.log("Main scene created");
+  create(data: { level: { key: string; url: string }; levelIndex: number }) {
+    this.bootData = data;
 
-    const map = this.make.tilemap({ key: GAME_TILEMAPS.level00.key });
+    console.log("Main scene created, level: ", this.bootData.level);
+
+    const map = this.make.tilemap(this.bootData.level);
 
     this.laserLayer = this.add.layer().setDepth(1);
     this.blockLayer = this.add.layer().setDepth(2);
@@ -331,13 +340,28 @@ export class GameScene extends Scene {
     this.uiGroup?.add(layer);
 
     // setup counters
-    const tilesCounter = new AvailableTilesCounter(this, this.uiLayer!, layer);
-    tilesCounter.setupScene(this.uiGroup!);
+    const tilesCounter = new AvailableTilesCounter(this, this.uiLayer!, this.uiGroup!, layer);
+    tilesCounter.setupScene();
+
+    // add level text:
+    const levelNameProp = layer.layer.properties.find(
+      (p) => (<{ name: string }>p).name === "LevelName"
+    );
+    const levelName = levelNameProp
+      ? (<{ value: string }>levelNameProp).value
+      : "(not set)";
+    const levelTxt = this.add.text(
+      5,
+      this.cameras.main.height - TILE_SIZE,
+      `Level ${this.bootData!.levelIndex + 1}: ${levelName}`
+    );
+    this.uiLayer!.add(levelTxt);
+    this.uiGroup?.add(levelTxt);
 
     // add start btn:
     const startBtn = this.add.sprite(
-      this.cameras.default.width - TILE_SIZE - 5,
-      TILE_SIZE / 2,
+      this.cameras.main.width - TILE_SIZE - 5,
+      this.cameras.main.height - TILE_SIZE,
       GAME_IMAGES.startBtn.key
     );
     startBtn.setInteractive();
@@ -350,8 +374,8 @@ export class GameScene extends Scene {
 
     // add reset btn:
     const resetBtn = this.add.sprite(
-      this.cameras.default.width - 2 * TILE_SIZE - 5 - 5,
-      TILE_SIZE / 2,
+      this.cameras.main.width - 2 * TILE_SIZE - 5 - 5,
+      this.cameras.main.height - TILE_SIZE,
       GAME_IMAGES.resetBtn.key
     );
     resetBtn.setInteractive();
@@ -623,12 +647,18 @@ export class GameScene extends Scene {
           this.restartLevel();
         },
         nextLevelCallback: () => {
-          this.restartLevel();
+          const nextLevel = LEVELS[this.bootData!.levelIndex + 1];
+          if (nextLevel) {
+            this.scene.start("GameScene", {
+              level: nextLevel,
+              levelIndex: this.bootData!.levelIndex + 1,
+            });
+          }
         },
       });
     } else if (allLasersStopped) {
       this.scene.pause(this);
-      console.log("============= YOU LOSE !!! =============");
+      console.log("============= YOU LOOSE !!! =============");
       this.scene.launch("GameEndScene", {
         status: GameEndStatus.LOST,
         restartCallback: () => {

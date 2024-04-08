@@ -1,5 +1,7 @@
 # Nova - C64 remake
 
+!!!Work in Progress!!!
+
 This is a remake of the old C64 game(s) [Nova](https://www.lemon64.com/game/nova) and [Nova 2](https://www.lemon64.com/game/nova-2), published 1993 and 194 by CP Verlag. This is a
 fun project of mine, and has no claim of accuracy or completeness.
 
@@ -34,6 +36,11 @@ be auto-loaded when the `GameScene` starts.
 
 Levels are created with [Tiled](https://www.mapeditor.org/), and exported as JSON tilemaps.
 A default level is provided in `game-art/levels/level-00.tmx`.
+
+Add levels to the `src/Constants.ts` file:
+
+- in the `GAME_TILEMAPS` constant, add an entry for the level json tilemap
+- in the `LEVELS` array, add a reference to the `GAME_TILEMAPS` entry
 
 #### Layers
 

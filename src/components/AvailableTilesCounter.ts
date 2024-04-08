@@ -3,6 +3,7 @@ import { EVENTS, TILE_SIZE } from "../Constants";
 export default class AvailableTilesCounter {
   protected scene: Phaser.Scene;
   protected uiLayer: Phaser.GameObjects.Layer;
+  protected uiGroup: Phaser.GameObjects.Group;
   protected availableBlocksLayer: Phaser.Tilemaps.TilemapLayer;
   protected blockCountMap = new Map<string, number>();
   protected blockTextMap = new Map<string, Phaser.GameObjects.Text>();
@@ -13,10 +14,12 @@ export default class AvailableTilesCounter {
   constructor(
     scene: Phaser.Scene,
     uiLayer: Phaser.GameObjects.Layer,
+    uiGroup: Phaser.GameObjects.Group,
     availableBlocksLayer: Phaser.Tilemaps.TilemapLayer
   ) {
     this.scene = scene;
     this.uiLayer = uiLayer;
+    this.uiGroup = uiGroup;
     this.availableBlocksLayer = availableBlocksLayer;
     this.selectionRect = scene.add.rectangle(
       0,
@@ -26,10 +29,12 @@ export default class AvailableTilesCounter {
       0x00ffff,
       0.5
     );
+    this.uiLayer.add(this.selectionRect);
+    this.uiGroup.add(this.selectionRect);
     this.selectionRect.setVisible(false);
   }
 
-  public setupScene(uiGroup: Phaser.GameObjects.Group) {
+  public setupScene() {
     // configure interaction listeners to select a tile
     this.availableBlocksLayer.setInteractive();
     this.availableBlocksLayer.on("pointerdown", this.onPointerClick, this);
@@ -59,7 +64,7 @@ export default class AvailableTilesCounter {
           .setOrigin(0.5, 0);
         lastBlockX = tileRect.x + TILE_SIZE;
         this.uiLayer.add(txtObj);
-        uiGroup.add(txtObj);
+        this.uiGroup.add(txtObj);
         this.blockTextMap.set(type, txtObj);
       }
     });
@@ -71,7 +76,7 @@ export default class AvailableTilesCounter {
       5,
       `Items left: \n${this.totalTiles}`
     );
-    uiGroup.add(totalTxtObj);
+    this.uiGroup.add(totalTxtObj);
     this.blockTextMap.set("TotalItems", totalTxtObj);
   }
 

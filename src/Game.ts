@@ -1,19 +1,20 @@
 import { Game } from "phaser";
 import { GameScene } from "./scenes/GameScene";
 import GameEndScene from "./scenes/GameEndScene";
+import { LEVELS } from "./Constants";
 
 export class NovaGame extends Game {
   constructor() {
     super({
-      parent: 'app',
+      parent: "app",
       dom: {
-        createContainer: true
+        createContainer: true,
       },
       width: 1024,
       height: 768,
       type: Phaser.AUTO,
       title: "Nova",
-      scene: [GameScene, GameEndScene],
+      // scene: [GameScene, GameEndScene],
       scale: {
         mode: Phaser.Scale.FIT,
       },
@@ -29,5 +30,11 @@ export class NovaGame extends Game {
         },
       },
     });
+
+    this.scene.add("GameScene", GameScene, true, {
+      level: LEVELS[0],
+      levelIndex: 0,
+    });
+    this.scene.add("GameEndScene", GameEndScene, false);
   }
 }

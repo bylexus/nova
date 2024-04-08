@@ -23,7 +23,10 @@ export const GAME_IMAGES = {
   startBtn: { key: "startBtn", url: "assets/018-start-btn.png" },
   resetBtn: { key: "resetBtn", url: "assets/019-reset-btn.png" },
   laserHead: { key: "laserHead", url: "assets/020-laser-head.png" },
-  forbiddenBlock: { key: "forbidden-block", url: "assets/021-forbidden-block.png" },
+  forbiddenBlock: {
+    key: "forbidden-block",
+    url: "assets/021-forbidden-block.png",
+  },
   laserH: { key: "laser-h", url: "assets/laser-horiz-1px.png" },
   laserV: { key: "laser-v", url: "assets/laser-vert-1px.png" },
 
@@ -32,7 +35,7 @@ export const GAME_IMAGES = {
 
 export const GAME_SPRITESHEETS = {
   spritesheet: { key: "spritesheet", url: "assets/tileset.png" },
-}
+};
 
 export const GAME_TILEMAPS = {
   level00: { key: "level-00", url: "assets/levels/level-00.json" },
@@ -41,6 +44,13 @@ export const GAME_TILEMAPS = {
   level03: { key: "level-03", url: "assets/levels/level-03.json" },
   level04: { key: "level-04", url: "assets/levels/level-04.json" },
 };
+
+export const LEVELS = [
+  GAME_TILEMAPS.level01,
+  GAME_TILEMAPS.level02,
+  GAME_TILEMAPS.level03,
+  GAME_TILEMAPS.level04,
+];
 
 export const EVENTS = {
   blockHit: Symbol("blockHit"),
