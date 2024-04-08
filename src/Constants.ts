@@ -43,13 +43,16 @@ export const GAME_TILEMAPS = {
   level02: { key: "level-02", url: "assets/levels/level-02.json" },
   level03: { key: "level-03", url: "assets/levels/level-03.json" },
   level04: { key: "level-04", url: "assets/levels/level-04.json" },
+  level05: { key: "level-05", url: "assets/levels/level-05.json" },
 };
 
 export const LEVELS = [
+  GAME_TILEMAPS.level00,
   GAME_TILEMAPS.level01,
   GAME_TILEMAPS.level02,
   GAME_TILEMAPS.level03,
   GAME_TILEMAPS.level04,
+  GAME_TILEMAPS.level05,
 ];
 
 export const EVENTS = {

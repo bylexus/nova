@@ -50,7 +50,7 @@
         <key>dxtCompressionMode</key>
         <enum type="SettingsBase::DxtCompressionMode">DXT_PERCEPTUAL</enum>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
+        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -74,7 +74,7 @@
         <key>textureSubPath</key>
         <string></string>
         <key>textureFormat</key>
-        <enum type="SettingsBase::TextureFormat">png</enum>
+        <enum type="SettingsBase::TextureFormat">png8</enum>
         <key>borderPadding</key>
         <uint>0</uint>
         <key>maxTextureSize</key>
@@ -124,7 +124,7 @@
             <key>json</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>tileset.json</filename>
+                <filename>../public/assets/tileset.json</filename>
             </struct>
         </map>
         <key>multiPackMode</key>
@@ -173,23 +173,23 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">001-block.png</key>
-            <key type="filename">002-cross.png</key>
-            <key type="filename">003-mirror-ball.png</key>
-            <key type="filename">004-mirror-bottom-left.png</key>
-            <key type="filename">005-mirror-bottom-right.png</key>
-            <key type="filename">006-mirror-top-left.png</key>
-            <key type="filename">007-mirror-top-right.png</key>
-            <key type="filename">008-timeblock.png</key>
-            <key type="filename">009-laser-down.png</key>
-            <key type="filename">010-laser-left.png</key>
-            <key type="filename">011-laser-right.png</key>
-            <key type="filename">012-laser-up.png</key>
-            <key type="filename">013-target-up.png</key>
-            <key type="filename">014-target-right.png</key>
-            <key type="filename">015-target-down.png</key>
-            <key type="filename">016-target-left.png</key>
-            <key type="filename">021-forbidden-block.png</key>
+            <key type="filename">../public/assets/001-block.png</key>
+            <key type="filename">../public/assets/002-cross.png</key>
+            <key type="filename">../public/assets/003-mirror-ball.png</key>
+            <key type="filename">../public/assets/004-mirror-bottom-left.png</key>
+            <key type="filename">../public/assets/005-mirror-bottom-right.png</key>
+            <key type="filename">../public/assets/006-mirror-top-left.png</key>
+            <key type="filename">../public/assets/007-mirror-top-right.png</key>
+            <key type="filename">../public/assets/008-timeblock.png</key>
+            <key type="filename">../public/assets/009-laser-down.png</key>
+            <key type="filename">../public/assets/010-laser-left.png</key>
+            <key type="filename">../public/assets/011-laser-right.png</key>
+            <key type="filename">../public/assets/012-laser-up.png</key>
+            <key type="filename">../public/assets/013-target-up.png</key>
+            <key type="filename">../public/assets/014-target-right.png</key>
+            <key type="filename">../public/assets/015-target-down.png</key>
+            <key type="filename">../public/assets/016-target-left.png</key>
+            <key type="filename">../public/assets/021-forbidden-block.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -204,6 +204,21 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">../public/assets/020-laser-head.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>1,1,3,3</rect>
+                <key>scale9Paddings</key>
+                <rect>1,1,3,3</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
         </map>
         <key>fileLists</key>
         <map type="SpriteSheetMap">
@@ -211,23 +226,24 @@
             <struct type="SpriteSheet">
                 <key>files</key>
                 <array>
-                    <filename>001-block.png</filename>
-                    <filename>002-cross.png</filename>
-                    <filename>003-mirror-ball.png</filename>
-                    <filename>004-mirror-bottom-left.png</filename>
-                    <filename>005-mirror-bottom-right.png</filename>
-                    <filename>006-mirror-top-left.png</filename>
-                    <filename>007-mirror-top-right.png</filename>
-                    <filename>008-timeblock.png</filename>
-                    <filename>009-laser-down.png</filename>
-                    <filename>010-laser-left.png</filename>
-                    <filename>011-laser-right.png</filename>
-                    <filename>012-laser-up.png</filename>
-                    <filename>013-target-up.png</filename>
-                    <filename>014-target-right.png</filename>
-                    <filename>015-target-down.png</filename>
-                    <filename>016-target-left.png</filename>
-                    <filename>021-forbidden-block.png</filename>
+                    <filename>../public/assets/001-block.png</filename>
+                    <filename>../public/assets/002-cross.png</filename>
+                    <filename>../public/assets/003-mirror-ball.png</filename>
+                    <filename>../public/assets/004-mirror-bottom-left.png</filename>
+                    <filename>../public/assets/005-mirror-bottom-right.png</filename>
+                    <filename>../public/assets/006-mirror-top-left.png</filename>
+                    <filename>../public/assets/007-mirror-top-right.png</filename>
+                    <filename>../public/assets/008-timeblock.png</filename>
+                    <filename>../public/assets/009-laser-down.png</filename>
+                    <filename>../public/assets/010-laser-left.png</filename>
+                    <filename>../public/assets/011-laser-right.png</filename>
+                    <filename>../public/assets/012-laser-up.png</filename>
+                    <filename>../public/assets/013-target-up.png</filename>
+                    <filename>../public/assets/014-target-right.png</filename>
+                    <filename>../public/assets/015-target-down.png</filename>
+                    <filename>../public/assets/016-target-left.png</filename>
+                    <filename>../public/assets/020-laser-head.png</filename>
+                    <filename>../public/assets/021-forbidden-block.png</filename>
                 </array>
             </struct>
         </map>

@@ -76,6 +76,15 @@ create sprites for each block. The tileset tiles must define its underlying Clas
 Also, the corresponding `tileset.png` must be provided with all the blocks, otherwise the
 tileset parsing may not work as expected. The tileset image can be created using [TexturePacker](https://www.codeandweb.com/texturepacker).
 
+## TODOs
+
+- [ ] fix bug: when laser get out of view, the game will not end
+- [ ] add real game assets for everything :-)
+- [ ] add sound effects
+- [ ] add music
+- [ ] store level progess in local storage
+- [ ] add start screen (start Audio Context)
+
 
 YouTube Walkthrough of the original:
 https://www.youtube.com/watch?v=YbfMREGx-1A

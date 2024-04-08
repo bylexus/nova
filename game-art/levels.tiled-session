@@ -77,6 +77,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "levels/level-05.tmx#tileset": {
+            "dynamicWrapping": false
+        },
         "tileset.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,

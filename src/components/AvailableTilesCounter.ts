@@ -100,6 +100,7 @@ export default class AvailableTilesCounter {
 
   public get selectedTileCount(): number {
     if (!this.selectedTile) return 0;
+    if (this.totalTiles <= 0) return 0;
     if (!this.blockCountMap.has(this.selectedTile!)) return 0;
     return this.blockCountMap.get(this.selectedTile) || 0;
   }
