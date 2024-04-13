@@ -1,0 +1,62 @@
+{
+	"textures": [
+		{
+			"image": "014-target-tileset.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 96,
+				"h": 48
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "01-target-right-red.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					}
+				},
+				{
+					"filename": "02-target-right-green.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 48,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					},
+					"frame": {
+						"x": 48,
+						"y": 0,
+						"w": 48,
+						"h": 48
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:386df4b8d8af10ddbd6a771dfdeeee21:ed1334d3ccecd5611ecf487f96fdb457:e221a62dcc691d07942c624c819e1b03$"
+	}
+}

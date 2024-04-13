@@ -35,6 +35,7 @@ export const GAME_IMAGES = {
 
 export const GAME_SPRITESHEETS = {
   spritesheet: { key: "spritesheet", url: "assets/tileset.png" },
+  target: {key: 'targetRightSheet', url: 'assets/014-target-tileset.png'}
 };
 
 export const GAME_TILEMAPS = {

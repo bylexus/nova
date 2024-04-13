@@ -1,14 +1,7 @@
-import { EVENTS, GAME_IMAGES } from "../Constants";
+import { EVENTS, GAME_SPRITESHEETS } from "../Constants";
 import LaserDirection from "../lib/LaserDirection";
 import Block from "./Block";
 import LaserHead from "./LaserHead";
-
-const DirectionImgMap = {
-  [LaserDirection.UP]: GAME_IMAGES.targetUp,
-  [LaserDirection.RIGHT]: GAME_IMAGES.targetRight,
-  [LaserDirection.DOWN]: GAME_IMAGES.targetDown,
-  [LaserDirection.LEFT]: GAME_IMAGES.targetLeft,
-};
 
 export default class Target extends Block {
   public laserInTarget: boolean = false;
@@ -20,9 +13,22 @@ export default class Target extends Block {
     y: number,
     direction: LaserDirection
   ) {
-    const img = DirectionImgMap[direction];
-    super(scene, x, y, img.key);
+    super(scene, x, y, GAME_SPRITESHEETS.target.key, 0);
     this.direction = direction;
+    switch (direction) {
+      case LaserDirection.RIGHT:
+        this.setAngle(0);
+        break;
+      case LaserDirection.DOWN:
+        this.setAngle(90);
+        break;
+      case LaserDirection.LEFT:
+        this.setAngle(180);
+        break;
+      case LaserDirection.UP:
+        this.setAngle(270);
+        break;
+    }
   }
 
   protected overlapLaserCallback(laserHead: LaserHead) {
@@ -39,6 +45,7 @@ export default class Target extends Block {
       ) {
         this.laserInTarget = true;
         this.scene.events.emit(EVENTS.targetReached, this, laserHead);
+        this.setFrame(1);
       } else {
         this.scene.events.emit(EVENTS.blockHit, this, laserHead);
       }

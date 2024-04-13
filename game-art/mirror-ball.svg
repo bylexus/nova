@@ -2,33 +2,32 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="62.058529mm"
-   height="62.058529mm"
-   viewBox="0 0 62.058529 62.058529"
+   width="48"
+   height="48"
+   viewBox="0 0 12.7 12.7"
    version="1.1"
    id="svg1"
    inkscape:version="1.3.2 (091e20e, 2023-11-25)"
    sodipodi:docname="mirror-ball.svg"
-   inkscape:export-filename="../public/assets/mirror-ball.png"
-   inkscape:export-xdpi="19.645969"
-   inkscape:export-ydpi="19.645969"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
      id="namedview1"
      pagecolor="#ffffff"
      bordercolor="#000000"
-     borderopacity="0.25"
+     borderopacity="0.15294118"
      inkscape:showpageshadow="2"
      inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
+     inkscape:pagecheckerboard="true"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:zoom="0.66936139"
-     inkscape:cx="76.939006"
-     inkscape:cy="115.03502"
+     inkscape:document-units="px"
+     showguides="true"
+     inkscape:zoom="17.458333"
+     inkscape:cx="23.97136"
+     inkscape:cy="24"
      inkscape:window-width="1728"
      inkscape:window-height="1051"
      inkscape:window-x="0"
@@ -36,17 +35,40 @@
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
   <defs
-     id="defs1" />
+     id="defs1">
+    <linearGradient
+       id="linearGradient2"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#928edc;stop-opacity:1;"
+         offset="0.00389864"
+         id="stop2" />
+      <stop
+         style="stop-color:#868686;stop-opacity:0.82548475;"
+         offset="0.70955163"
+         id="stop3" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2"
+       id="radialGradient3"
+       cx="4.2889023"
+       cy="4.8496418"
+       fx="4.2889023"
+       fy="4.8496418"
+       r="6.3499999"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(-81.031832,-89.727938)">
+     style="display:inline">
     <circle
-       style="fill:#23c62b;stroke-width:2.11667;stroke-linecap:round"
+       style="fill:url(#radialGradient3);fill-opacity:1;stroke-width:0.628999;stroke-linecap:round;stroke-miterlimit:3.7;paint-order:stroke fill markers"
        id="path1"
-       cx="112.0611"
-       cy="120.7572"
-       r="31.029264" />
+       cx="6.3499999"
+       cy="6.3499999"
+       r="6.3499999" />
   </g>
 </svg>
