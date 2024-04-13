@@ -34,7 +34,7 @@
         <key>dataFormat</key>
         <string>phaser</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>../public/assets/011-laser-right-tileset.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>pvrQualityLevel</key>
@@ -50,7 +50,7 @@
         <key>dxtCompressionMode</key>
         <enum type="SettingsBase::DxtCompressionMode">DXT_PERCEPTUAL</enum>
         <key>ditherType</key>
-        <enum type="SettingsBase::DitherType">PngQuantLow</enum>
+        <enum type="SettingsBase::DitherType">NearestNeighbour</enum>
         <key>backgroundColor</key>
         <uint>0</uint>
         <key>libGdx</key>
@@ -74,7 +74,7 @@
         <key>textureSubPath</key>
         <string></string>
         <key>textureFormat</key>
-        <enum type="SettingsBase::TextureFormat">png8</enum>
+        <enum type="SettingsBase::TextureFormat">png</enum>
         <key>borderPadding</key>
         <uint>0</uint>
         <key>maxTextureSize</key>
@@ -124,7 +124,7 @@
             <key>json</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>../public/assets/tileset.json</filename>
+                <filename>../public/assets/011-laser-right.json</filename>
             </struct>
         </map>
         <key>multiPackMode</key>
@@ -141,7 +141,7 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <false/>
+        <true/>
         <key>trimSpriteNames</key>
         <false/>
         <key>prependSmartFolderName</key>
@@ -161,7 +161,7 @@
             <key>trimMargin</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">None</enum>
+            <enum type="SpriteSettings::TrimMode">Trim</enum>
             <key>tracerTolerance</key>
             <int>200</int>
             <key>heuristicMask</key>
@@ -169,27 +169,15 @@
             <key>defaultPivotPoint</key>
             <point_f>0.5,0.5</point_f>
             <key>writePivotPoints</key>
-            <true/>
+            <false/>
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../public/assets/001-block.png</key>
-            <key type="filename">../public/assets/002-cross.png</key>
-            <key type="filename">../public/assets/003-mirror-ball.png</key>
-            <key type="filename">../public/assets/004-mirror-bottom-left.png</key>
-            <key type="filename">../public/assets/005-mirror-bottom-right.png</key>
-            <key type="filename">../public/assets/006-mirror-top-left.png</key>
-            <key type="filename">../public/assets/007-mirror-top-right.png</key>
-            <key type="filename">../public/assets/008-timeblock.png</key>
-            <key type="filename">../public/assets/009-laser-down.png</key>
-            <key type="filename">../public/assets/010-laser-left.png</key>
-            <key type="filename">../public/assets/011-laser-right.png</key>
-            <key type="filename">../public/assets/012-laser-up.png</key>
-            <key type="filename">../public/assets/013-target-up.png</key>
-            <key type="filename">../public/assets/014-target-right.png</key>
-            <key type="filename">../public/assets/015-target-down.png</key>
-            <key type="filename">../public/assets/016-target-left.png</key>
-            <key type="filename">../public/assets/021-forbidden-block.png</key>
+            <key type="filename">../public/assets/011-laser-right-pics/011-laser-right-001.png</key>
+            <key type="filename">../public/assets/011-laser-right-pics/011-laser-right-002.png</key>
+            <key type="filename">../public/assets/011-laser-right-pics/011-laser-right-003.png</key>
+            <key type="filename">../public/assets/011-laser-right-pics/011-laser-right-004.png</key>
+            <key type="filename">../public/assets/011-laser-right-pics/011-laser-right-005.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -211,23 +199,11 @@
             <struct type="SpriteSheet">
                 <key>files</key>
                 <array>
-                    <filename>../public/assets/001-block.png</filename>
-                    <filename>../public/assets/002-cross.png</filename>
-                    <filename>../public/assets/003-mirror-ball.png</filename>
-                    <filename>../public/assets/004-mirror-bottom-left.png</filename>
-                    <filename>../public/assets/005-mirror-bottom-right.png</filename>
-                    <filename>../public/assets/006-mirror-top-left.png</filename>
-                    <filename>../public/assets/007-mirror-top-right.png</filename>
-                    <filename>../public/assets/008-timeblock.png</filename>
-                    <filename>../public/assets/009-laser-down.png</filename>
-                    <filename>../public/assets/010-laser-left.png</filename>
-                    <filename>../public/assets/011-laser-right.png</filename>
-                    <filename>../public/assets/012-laser-up.png</filename>
-                    <filename>../public/assets/013-target-up.png</filename>
-                    <filename>../public/assets/014-target-right.png</filename>
-                    <filename>../public/assets/015-target-down.png</filename>
-                    <filename>../public/assets/016-target-left.png</filename>
-                    <filename>../public/assets/021-forbidden-block.png</filename>
+                    <filename>../public/assets/011-laser-right-pics/011-laser-right-001.png</filename>
+                    <filename>../public/assets/011-laser-right-pics/011-laser-right-002.png</filename>
+                    <filename>../public/assets/011-laser-right-pics/011-laser-right-003.png</filename>
+                    <filename>../public/assets/011-laser-right-pics/011-laser-right-004.png</filename>
+                    <filename>../public/assets/011-laser-right-pics/011-laser-right-005.png</filename>
                 </array>
             </struct>
         </map>

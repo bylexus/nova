@@ -46,6 +46,10 @@ export const GAME_TILEMAPS = {
   level05: { key: "level-05", url: "assets/levels/level-05.json" },
 };
 
+export const TEXTURE_ATLAS = {
+  laserRight: {key: 'laserRightAtlas', textureUrl: 'assets/011-laser-right-tileset.png', atlasUrl: 'assets/011-laser-right.json'},
+};
+
 export const LEVELS = [
   GAME_TILEMAPS.level00,
   GAME_TILEMAPS.level01,
@@ -54,6 +58,7 @@ export const LEVELS = [
   GAME_TILEMAPS.level04,
   GAME_TILEMAPS.level05,
 ];
+
 
 export const EVENTS = {
   blockHit: Symbol("blockHit"),

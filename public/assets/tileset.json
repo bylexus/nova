@@ -4,7 +4,7 @@
 			"image": "tileset.png",
 			"format": "RGBA8888",
 			"size": {
-				"w": 821,
+				"w": 816,
 				"h": 48
 			},
 			"scale": 1,
@@ -433,31 +433,6 @@
 						"x": 0.5,
 						"y": 0.5
 					}
-				},
-				{
-					"filename": "020-laser-head.png",
-					"rotated": false,
-					"trimmed": false,
-					"sourceSize": {
-						"w": 5,
-						"h": 5
-					},
-					"spriteSourceSize": {
-						"x": 0,
-						"y": 0,
-						"w": 5,
-						"h": 5
-					},
-					"frame": {
-						"x": 816,
-						"y": 0,
-						"w": 5,
-						"h": 5
-					},
-					"anchor": {
-						"x": 0.5,
-						"y": 0.5
-					}
 				}
 			]
 		}
@@ -465,6 +440,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:7f51bb6d36bb9738afdc42f584aa3287:250eab9a65bb548983304ec7b864cb47:ace0e5e82375743ccde85e973fd84fb5$"
+		"smartupdate": "$TexturePacker:SmartUpdate:c6abf860784a1019099de1b9999694d5:648ff2afca7adcd02e25aa1560d5f4ea:ace0e5e82375743ccde85e973fd84fb5$"
 	}
 }

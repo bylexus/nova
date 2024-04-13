@@ -6,6 +6,7 @@ import {
   GAME_TILEMAPS,
   GAME_SPRITESHEETS,
   LEVELS,
+  TEXTURE_ATLAS,
 } from "../Constants";
 import HLaser from "../sprites/HLaser";
 import VLaser from "../sprites/VLaser";
@@ -109,6 +110,10 @@ export class GameScene extends Scene {
         frameWidth: TILE_SIZE,
         frameHeight: TILE_SIZE,
       });
+    });
+
+    Object.values(TEXTURE_ATLAS).forEach((value) => {
+      this.load.atlas(value.key, value.textureUrl, value.atlasUrl);
     });
   }
 
@@ -340,7 +345,12 @@ export class GameScene extends Scene {
     this.uiGroup?.add(layer);
 
     // setup counters
-    const tilesCounter = new AvailableTilesCounter(this, this.uiLayer!, this.uiGroup!, layer);
+    const tilesCounter = new AvailableTilesCounter(
+      this,
+      this.uiLayer!,
+      this.uiGroup!,
+      layer
+    );
     tilesCounter.setupScene();
 
     // add level text:
