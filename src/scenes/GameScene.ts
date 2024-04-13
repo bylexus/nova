@@ -191,7 +191,7 @@ export class GameScene extends Scene {
     // Laser head hit Laser head
     this.physics.add.collider(this.laserHeads, this.laserHeads, (l1, l2) => {
       if (l1 instanceof LaserHead && l2 instanceof LaserHead) {
-        console.log('LaserHead hit LaserHead');
+        console.log("LaserHead hit LaserHead");
         this.stopHead(l1);
         this.stopHead(l2);
         this.checkGameEnd();
@@ -660,20 +660,24 @@ export class GameScene extends Scene {
     if (allTargetsReached) {
       this.scene.pause(this);
       console.log("============= YOU WIN !!! =============");
-      this.scene.launch("GameEndScene", {
-        status: GameEndStatus.WON,
-        restartCallback: () => {
-          this.restartLevel();
-        },
-        nextLevelCallback: () => {
-          const nextLevel = LEVELS[getLevelIndex(this.bootData!.level) + 1];
-          if (nextLevel) {
-            this.scene.start("GameScene", {
-              level: nextLevel,
-            });
-          }
-        },
-      });
+      const nextLevel = LEVELS[getLevelIndex(this.bootData!.level) + 1];
+      if (nextLevel) {
+        this.scene.launch("GameEndScene", {
+          status: GameEndStatus.WON,
+          restartCallback: () => {
+            this.restartLevel();
+          },
+          nextLevelCallback: () => {
+            if (nextLevel) {
+              this.scene.start("GameScene", {
+                level: nextLevel,
+              });
+            }
+          },
+        });
+      } else {
+        this.scene.launch("AllLevelsDoneScene");
+      }
     } else if (allLasersStopped) {
       this.scene.pause(this);
       console.log("============= YOU LOOSE !!! =============");

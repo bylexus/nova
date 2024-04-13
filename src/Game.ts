@@ -2,6 +2,7 @@ import { Game } from "phaser";
 import { GameScene } from "./scenes/GameScene";
 import GameEndScene from "./scenes/GameEndScene";
 import { LEVELS } from "./Constants";
+import AllLevelsDoneScene from "./scenes/AllLevelsDoneScene";
 
 export class NovaGame extends Game {
   constructor() {
@@ -35,5 +36,6 @@ export class NovaGame extends Game {
       level: LEVELS[0]
     });
     this.scene.add("GameEndScene", GameEndScene, false);
+    this.scene.add("AllLevelsDoneScene", AllLevelsDoneScene, false);
   }
 }
