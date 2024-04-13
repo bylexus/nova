@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="21" height="16" tilewidth="48" tileheight="48" infinite="0" nextlayerid="10" nextobjectid="2">
+ <editorsettings>
+  <export target="../../public/assets/levels/level-04.json" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" name="tileset" tilewidth="48" tileheight="48" tilecount="17" columns="17">
+  <image source="../../public/assets/tileset.png" width="816" height="48"/>
+  <tile id="0" type="BlockingBlock"/>
+  <tile id="1" type="Cross"/>
+  <tile id="2" type="BallMirror"/>
+  <tile id="3" type="BottomLeftMirror"/>
+  <tile id="4" type="BottomRightMirror"/>
+  <tile id="5" type="TopLeftMirror"/>
+  <tile id="6" type="TopRightMirror"/>
+  <tile id="7" type="TimedBlock"/>
+  <tile id="8" type="LaserStartDown"/>
+  <tile id="9" type="LaserStartLeft"/>
+  <tile id="10" type="LaserStartRight"/>
+  <tile id="11" type="LaserStartUp"/>
+  <tile id="12" type="TargetUp"/>
+  <tile id="13" type="TargetRight"/>
+  <tile id="14" type="TargetDown"/>
+  <tile id="15" type="TargetLeft"/>
+  <tile id="16" type="ForbiddenBlock"/>
+ </tileset>
+ <imagelayer id="9" name="bg" opacity="0.5" offsetx="-1.34366" offsety="95.2359">
+  <image source="../../../../Screenshots/SCR-20240413-mxqh.png" width="960" height="576"/>
+ </imagelayer>
+ <layer id="2" name="Blocks" width="21" height="16">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+17,17,17,17,17,17,17,17,17,17,15,17,17,17,17,17,17,17,17,17,0,
+14,17,17,17,17,17,0,17,17,17,17,17,17,17,17,17,17,17,17,17,0,
+17,17,17,0,17,17,0,17,0,17,0,17,0,17,17,0,17,17,17,17,0,
+17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,
+17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,
+11,17,17,0,17,17,17,17,0,17,17,17,0,17,17,17,17,17,17,17,0,
+17,17,17,17,17,17,0,17,17,17,17,17,0,17,17,0,17,17,17,16,0,
+17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,
+17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,17,0,
+1,1,1,17,1,1,17,1,1,1,1,1,17,1,1,1,1,1,1,1,0,
+1,1,1,17,1,1,17,1,1,1,1,1,17,1,1,1,1,1,1,1,0,
+1,1,1,13,1,1,13,1,1,1,1,1,13,1,1,1,1,1,1,1,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="5" name="Info" width="21" height="16" locked="1">
+  <properties>
+   <property name="BallMirror" type="int" value="5"/>
+   <property name="BlockingBlock" type="int" value="0"/>
+   <property name="BottomLeftMirror" type="int" value="3"/>
+   <property name="BottomRightMirror" type="int" value="1"/>
+   <property name="Cross" type="int" value="2"/>
+   <property name="LevelName" value="Destination 2"/>
+   <property name="MaxItems" type="int" value="13"/>
+   <property name="TimedBlock" type="int" value="0"/>
+   <property name="TopLeftMirror" type="int" value="0"/>
+   <property name="TopRightMirror" type="int" value="2"/>
+  </properties>
+  <data encoding="csv">
+0,1,0,8,0,3,0,2,0,5,0,4,0,7,0,6,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="8" name="img"/>
+ <layer id="7" name="SelectionArea" width="21" height="16" visible="0" locked="1">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+</map>

@@ -32,8 +32,7 @@ export class NovaGame extends Game {
     });
 
     this.scene.add("GameScene", GameScene, true, {
-      level: LEVELS[0],
-      levelIndex: 0,
+      level: LEVELS[0]
     });
     this.scene.add("GameEndScene", GameEndScene, false);
   }

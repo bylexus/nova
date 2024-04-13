@@ -18,7 +18,7 @@ import TopRightMirror from "../sprites/TopRightMirror";
 import BlockingBlock from "../sprites/BlockingBlock";
 import Block from "../sprites/Block";
 import BallMirror from "../sprites/BallMirror";
-import { floorToGrid, snapToHalfGrid } from "../lib/tools";
+import { floorToGrid, getLevelIndex, snapToHalfGrid } from "../lib/tools";
 import Cross from "../sprites/Cross";
 import TimedBlock from "../sprites/TimedBlock";
 import LaserCannon from "../sprites/LaserCannon";
@@ -43,7 +43,6 @@ export class GameScene extends Scene {
 
   private bootData: {
     level: { key: string; url: string };
-    levelIndex: number;
   } | null;
 
   constructor() {
@@ -117,7 +116,7 @@ export class GameScene extends Scene {
     });
   }
 
-  create(data: { level: { key: string; url: string }; levelIndex: number }) {
+  create(data: { level: { key: string; url: string } }) {
     this.bootData = data;
 
     console.log("Main scene created, level: ", this.bootData.level);
@@ -188,6 +187,16 @@ export class GameScene extends Scene {
         this.checkGameEnd();
       }
     );
+
+    // Laser head hit Laser head
+    this.physics.add.collider(this.laserHeads, this.laserHeads, (l1, l2) => {
+      if (l1 instanceof LaserHead && l2 instanceof LaserHead) {
+        console.log('LaserHead hit LaserHead');
+        this.stopHead(l1);
+        this.stopHead(l2);
+        this.checkGameEnd();
+      }
+    });
 
     this.events.addListener(EVENTS.tileSelected, (type: string) => {
       console.log("Tile selected: " + type);
@@ -363,7 +372,7 @@ export class GameScene extends Scene {
     const levelTxt = this.add.text(
       5,
       this.cameras.main.height - TILE_SIZE,
-      `Level ${this.bootData!.levelIndex + 1}: ${levelName}`
+      `Level ${getLevelIndex(this.bootData!.level) + 1}: ${levelName}`
     );
     this.uiLayer!.add(levelTxt);
     this.uiGroup?.add(levelTxt);
@@ -657,11 +666,10 @@ export class GameScene extends Scene {
           this.restartLevel();
         },
         nextLevelCallback: () => {
-          const nextLevel = LEVELS[this.bootData!.levelIndex + 1];
+          const nextLevel = LEVELS[getLevelIndex(this.bootData!.level) + 1];
           if (nextLevel) {
             this.scene.start("GameScene", {
               level: nextLevel,
-              levelIndex: this.bootData!.levelIndex + 1,
             });
           }
         },

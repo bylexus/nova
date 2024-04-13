@@ -1,4 +1,4 @@
-import { GAME_IMAGES } from "../Constants";
+import { GAME_IMAGES, LASER_GROW_SPEED } from "../Constants";
 import Block from "./Block";
 import LaserHead from "./LaserHead";
 
@@ -15,9 +15,9 @@ export default class TimedBlock extends Block {
       const fadeOutTween = this.scene.add.tween({
         alpha: 0.4,
         targets: this,
-        duration: 500,
+        duration: 49500 / LASER_GROW_SPEED,
       });
-      this.scene.time.delayedCall(500, () => {
+      this.scene.time.delayedCall(49500 / LASER_GROW_SPEED, () => {
         laserHead.startMoving();
         fadeOutTween.destroy();
         this.destroy();

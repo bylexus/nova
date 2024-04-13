@@ -20,7 +20,8 @@ export default class LaserHead extends Phaser.Physics.Arcade.Sprite {
 
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
-    (this.body as Phaser.Physics.Arcade.Body).syncBounds = true;
+    // body is a wee bit bigger, to make sure all colissions are happening
+    this.body?.setSize(this.width + 2, this.height + 2);
     this.direction = direction;
     this.setOrigin(0.5, 0.5);
   }

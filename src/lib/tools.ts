@@ -1,4 +1,4 @@
-import { TILE_SIZE } from "../Constants";
+import { LEVELS, TILE_SIZE } from "../Constants";
 
 export function snapToGrid(pixelValue: number): number {
 	return Math.round(pixelValue / TILE_SIZE) * TILE_SIZE;
@@ -11,4 +11,8 @@ export function snapToHalfGrid(pixelValue: number): number {
 
 export function floorToGrid(pixelValue: number): number {
 	return Math.floor(pixelValue / TILE_SIZE) * TILE_SIZE;
+}
+
+export function getLevelIndex(level: LevelTileMap): number {
+	return LEVELS.indexOf(level);
 }

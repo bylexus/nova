@@ -20,10 +20,10 @@
         },
         "levels/level-00.tmx": {
             "scale": 0.5953,
-            "selectedLayer": -1,
+            "selectedLayer": 0,
             "viewCenter": {
                 "x": 510.666890643373,
-                "y": 446.8335293129514
+                "y": 446.83352931295144
             }
         },
         "levels/level-00.tmx#tileset": {
@@ -80,6 +80,248 @@
         "levels/level-05.tmx#tileset": {
             "dynamicWrapping": false
         },
+        "levels/level-06.tmx": {
+            "scale": 0.7558531746031745,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 485.54403465021664,
+                "y": 470.9909436933981
+            }
+        },
+        "levels/level-06.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-07.tmx": {
+            "scale": 0.7558531746031745,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 468.3449271557948,
+                "y": 351.9201995012469
+            }
+        },
+        "levels/level-07.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-08.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.99999999999994,
+                "y": 383.99999999999994
+            }
+        },
+        "levels/level-08.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-09.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.99999999999994,
+                "y": 383.99999999999994
+            }
+        },
+        "levels/level-09.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-10.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-10.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-11.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.99999999999994,
+                "y": 383.99999999999994
+            }
+        },
+        "levels/level-11.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-12.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-12.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-13.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 478.5536159600997,
+                "y": 414.92321827011415
+            }
+        },
+        "levels/level-13.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-14.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-14.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-15.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-15.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-16.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-16.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-17.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-17.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-18.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-18.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-19.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.99999999999994,
+                "y": 383.99999999999994
+            }
+        },
+        "levels/level-19.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-20.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.99999999999994,
+                "y": 383.99999999999994
+            }
+        },
+        "levels/level-20.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-21.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-21.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-22.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-22.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-23.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-23.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-24.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-24.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-25.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-25.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/level-26.tmx": {
+            "scale": 0.7543564356435644,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 503.74064837905235,
+                "y": 384.4336527103294
+            }
+        },
+        "levels/level-26.tmx#tileset": {
+            "scaleInDock": 1
+        },
+        "levels/own/level-niki-01.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 503.99999999999994,
+                "y": 383.99999999999994
+            }
+        },
+        "levels/own/level-niki-01.tmx#tileset": {
+            "scaleInDock": 1
+        },
         "tileset.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
@@ -101,13 +343,18 @@
     "project": "levels.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "levels/level-01.tmx",
-        "levels/level-02.tmx",
-        "levels/level-03.tmx",
-        "levels/level-04.tmx",
-        "levels/level-00.tmx",
-        "tileset.tsx",
-        "blocks.tsx"
+        "levels/level-22.tmx",
+        "levels/level-21.tmx",
+        "levels/level-20.tmx",
+        "levels/level-19.tmx",
+        "levels/level-18.tmx",
+        "levels/level-17.tmx",
+        "levels/level-16.tmx",
+        "levels/level-14.tmx",
+        "levels/level-10.tmx",
+        "levels/level-11.tmx",
+        "levels/level-12.tmx",
+        "levels/level-13.tmx"
     ],
     "tileset.embedInMap": true,
     "tileset.lastUsedFilter": "Tiled tileset files (*.tsx *.xml)",
