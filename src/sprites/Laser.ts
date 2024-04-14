@@ -19,6 +19,16 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
     this.scene.add.existing(this);
     this.scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body).syncBounds = true;
+
+    const bloomFx = this.postFX.addBloom(0xffffffff, 0.5, 0.5, 1, 1);
+    this.scene.tweens.add({
+      targets: bloomFx,
+      blurStrength: 2,
+      strength: 0.5,
+      yoyo: true,
+      repeat: -1,
+      duration: 500,
+    });
   }
 
   public abstract get direction(): LaserDirection;
@@ -64,7 +74,6 @@ export default abstract class Laser extends Phaser.GameObjects.TileSprite {
   protected overlapLaserHeadCallback(laserHead: LaserHead) {
     this.scene.events.emit(EVENTS.laserHit, laserHead, this);
   }
-
 
   public removeLaserCollider() {
     if (this.laserHeadCollider) {

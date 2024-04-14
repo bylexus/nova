@@ -10,6 +10,8 @@ export default class LaserHead extends Phaser.Physics.Arcade.Sprite {
   public direction: LaserDirection;
   public tailBeams: Laser[] = [];
 
+  protected particleEmitter: Phaser.GameObjects.Particles.ParticleEmitter;
+
   constructor(
     scene: Phaser.Scene,
     x: number,
@@ -24,6 +26,20 @@ export default class LaserHead extends Phaser.Physics.Arcade.Sprite {
     this.body?.setSize(this.width + 2, this.height + 2);
     this.direction = direction;
     this.setOrigin(0.5, 0.5);
+
+    this.particleEmitter = this.scene.add.particles(
+      0,
+      0,
+      GAME_IMAGES.laserHeadParticle.key,
+      {
+        emitting: false,
+        follow: this,
+        blendMode: Phaser.BlendModes.ADD,
+        lifespan: 200,
+        alpha: { start: 1, end: 0 },
+        speed: { random: [10, 200] },
+      }
+    );
   }
 
   public preUpdate(_time: number, _delta: number): void {
@@ -31,6 +47,7 @@ export default class LaserHead extends Phaser.Physics.Arcade.Sprite {
   }
 
   public startMoving() {
+    this.particleEmitter.start();
     switch (this.direction) {
       case LaserDirection.UP:
         this.setVelocity(0, -1 * LASER_GROW_SPEED);
@@ -49,6 +66,7 @@ export default class LaserHead extends Phaser.Physics.Arcade.Sprite {
 
   public stopMoving() {
     this.setVelocity(0, 0);
+    this.particleEmitter.stop();
   }
 
   public growLaser(): void {

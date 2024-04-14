@@ -6,6 +6,7 @@ import LaserHead from "./LaserHead";
 export default class Target extends Block {
   public laserInTarget: boolean = false;
   protected direction: LaserDirection;
+  protected shineFx: Phaser.FX.Shine;
 
   constructor(
     scene: Phaser.Scene,
@@ -29,6 +30,8 @@ export default class Target extends Block {
         this.setAngle(270);
         break;
     }
+
+    this.shineFx = this.postFX.addShine(1, 1, 3);
   }
 
   protected overlapLaserCallback(laserHead: LaserHead) {
@@ -46,6 +49,8 @@ export default class Target extends Block {
         this.laserInTarget = true;
         this.scene.events.emit(EVENTS.targetReached, this, laserHead);
         this.setFrame(1);
+        this.postFX.remove(this.shineFx);
+        this.postFX.addGlow(0x88ff88, 5);
       } else {
         this.scene.events.emit(EVENTS.blockHit, this, laserHead);
       }
