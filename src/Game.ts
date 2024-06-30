@@ -1,8 +1,10 @@
 import { Game } from "phaser";
 import { GameScene } from "./scenes/GameScene";
 import GameEndScene from "./scenes/GameEndScene";
-import { LEVELS } from "./Constants";
 import AllLevelsDoneScene from "./scenes/AllLevelsDoneScene";
+import { PreloaderScene } from "./scenes/PreloaderScene";
+
+const audioContext = new AudioContext();
 
 export class NovaGame extends Game {
   constructor() {
@@ -15,12 +17,11 @@ export class NovaGame extends Game {
       height: 768,
       type: Phaser.AUTO,
       title: "Nova",
-      // scene: [GameScene, GameEndScene],
       scale: {
         mode: Phaser.Scale.FIT,
       },
       audio: {
-        // context: new AudioContext(),
+        context: audioContext,
       },
       physics: {
         default: "arcade",
@@ -32,9 +33,8 @@ export class NovaGame extends Game {
       },
     });
 
-    this.scene.add("GameScene", GameScene, true, {
-      level: LEVELS[0]
-    });
+    this.scene.add("PreloadScene", PreloaderScene, true);
+    this.scene.add("GameScene", GameScene, false);
     this.scene.add("GameEndScene", GameEndScene, false);
     this.scene.add("AllLevelsDoneScene", AllLevelsDoneScene, false);
   }

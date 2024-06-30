@@ -19,6 +19,7 @@ export const GAME_IMAGES = {
   targetRight: { key: "targetRight", url: "assets/014-target-right.png" },
   targetDown: { key: "targetDown", url: "assets/015-target-down.png" },
   targetLeft: { key: "targetLeft", url: "assets/016-target-left.png" },
+  eraser: { key: "eraser", url: "assets/022-eraser.png" },
   tileSelect: { key: "tileSelect", url: "assets/017-tile-select.png" },
   startBtn: { key: "startBtn", url: "assets/018-start-btn.png" },
   resetBtn: { key: "resetBtn", url: "assets/019-reset-btn.png" },
@@ -81,14 +82,14 @@ export const LEVELS = [
   // GAME_TILEMAPS.level27,
   // GAME_TILEMAPS.ownNiki01,
   // GAME_TILEMAPS.level00,
-  // GAME_TILEMAPS.level01,
-  // GAME_TILEMAPS.level02,
-  // GAME_TILEMAPS.level03,
-  // GAME_TILEMAPS.level04,
-  // GAME_TILEMAPS.level05,
-  // GAME_TILEMAPS.level06,
-  // GAME_TILEMAPS.level07,
-  // GAME_TILEMAPS.level08,
+  GAME_TILEMAPS.level01,
+  GAME_TILEMAPS.level02,
+  GAME_TILEMAPS.level03,
+  GAME_TILEMAPS.level04,
+  GAME_TILEMAPS.level05,
+  GAME_TILEMAPS.level06,
+  GAME_TILEMAPS.level07,
+  GAME_TILEMAPS.level08,
   GAME_TILEMAPS.level09,
   GAME_TILEMAPS.level10,
   GAME_TILEMAPS.level11,
@@ -120,3 +121,7 @@ export const EVENTS = {
   tileSelected: Symbol("tileSelected"),
   allTilesUsed: Symbol("allTilesUsed"),
 };
+
+export const SOUNDS = {
+  theme1: { key: "theme1", url: "assets/music/nova-song-1.mp3" },
+}

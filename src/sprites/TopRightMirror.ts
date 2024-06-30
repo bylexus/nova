@@ -4,6 +4,8 @@ import Block from "./Block";
 import LaserHead from "./LaserHead";
 
 export default class TopRightMirror extends Block {
+  public blockClass = "TopRightMirror";
+
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, GAME_IMAGES.mirrorTR.key);
 

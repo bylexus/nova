@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="21" height="16" tilewidth="48" tileheight="48" infinite="0" nextlayerid="8" nextobjectid="1">
  <editorsettings>
-  <export target="level-02.json" format="json"/>
+  <export target="../../public/assets/levels/level-02.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="tileset" tilewidth="48" tileheight="48" tilecount="17" columns="17">
-  <image source="../../public/assets/tileset.png" width="816" height="48"/>
+ <tileset firstgid="1" name="tileset" tilewidth="48" tileheight="48" tilecount="18" columns="18">
+  <image source="../../public/assets/tileset.png" width="864" height="48"/>
   <tile id="0" type="BlockingBlock"/>
   <tile id="1" type="Cross"/>
   <tile id="2" type="BallMirror"/>
@@ -21,6 +21,7 @@
   <tile id="13" type="TargetRight"/>
   <tile id="14" type="TargetDown"/>
   <tile id="15" type="TargetLeft"/>
+  <tile id="17" type="Eraser"/>
  </tileset>
  <layer id="2" name="Blocks" width="21" height="16">
   <data encoding="csv">
@@ -42,7 +43,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="5" name="Info" width="21" height="16" locked="1">
+ <layer id="5" name="Info" width="21" height="16">
   <properties>
    <property name="BallMirror" type="int" value="2"/>
    <property name="BlockingBlock" type="int" value="0"/>
@@ -56,7 +57,7 @@
    <property name="TopRightMirror" type="int" value="0"/>
   </properties>
   <data encoding="csv">
-0,1,0,8,0,3,0,2,0,5,0,4,0,7,0,6,0,0,0,0,0,
+0,1,0,8,0,3,0,2,0,5,0,4,0,7,0,6,0,18,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

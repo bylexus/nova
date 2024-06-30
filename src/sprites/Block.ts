@@ -1,6 +1,8 @@
 import LaserHead from "./LaserHead";
 
-export default class Block extends Phaser.Physics.Arcade.Sprite {
+export default abstract class Block extends Phaser.Physics.Arcade.Sprite {
+  public abstract blockClass: string;
+  public playerAddedBlock: boolean = false;
   protected seenLaserHeads: Set<LaserHead> = new Set();
   protected bloom: Phaser.FX.Bloom | null = null;
   // protected bloomTween: Phaser.Tweens.Tween | null = null;

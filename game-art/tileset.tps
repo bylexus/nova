@@ -4,7 +4,7 @@
         <key>fileFormatVersion</key>
         <int>6</int>
         <key>texturePackerVersion</key>
-        <string>7.2.0</string>
+        <string>7.4.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -190,6 +190,7 @@
             <key type="filename">../public/assets/015-target-down.png</key>
             <key type="filename">../public/assets/016-target-left.png</key>
             <key type="filename">../public/assets/021-forbidden-block.png</key>
+            <key type="filename">../public/assets/022-eraser.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -228,6 +229,7 @@
                     <filename>../public/assets/015-target-down.png</filename>
                     <filename>../public/assets/016-target-left.png</filename>
                     <filename>../public/assets/021-forbidden-block.png</filename>
+                    <filename>../public/assets/022-eraser.png</filename>
                 </array>
             </struct>
         </map>

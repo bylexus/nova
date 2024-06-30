@@ -79,12 +79,13 @@ tileset parsing may not work as expected. The tileset image can be created using
 ## TODOs
 
 - [ ] fix bug: when laser get out of view, the game will not end
-- [ ] add "eraser" or undo - user should be able to correct mistakes
+- [x] add "eraser" or undo - user should be able to correct mistakes
 - [ ] add real game assets for everything :-)
 - [ ] add sound effects
-- [ ] add music
+- [x] add music
 - [ ] store level progess in local storage
-- [ ] add start screen (start Audio Context)
+- [-] add preloader (start Audio Context), WIP
+- [ ] add start screen
 
 
 YouTube Walkthrough of the original:

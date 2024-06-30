@@ -4,7 +4,8 @@
  "layers":[
         {
          "id":9,
-         "image":"..\/..\/..\/..\/..\/Screenshots\/SCR-20240413-mxqh.png",
+         "image":"..\/..\/..\/game-art\/black.png",
+         "locked":true,
          "name":"bg",
          "offsetx":-1.34366,
          "offsety":95.2359,
@@ -42,7 +43,7 @@
          "y":0
         }, 
         {
-         "data":[0, 1, 0, 8, 0, 3, 0, 2, 0, 5, 0, 4, 0, 7, 0, 6, 0, 0, 0, 0, 0,
+         "data":[0, 1, 0, 8, 0, 3, 0, 2, 0, 5, 0, 4, 0, 7, 0, 6, 0, 18, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -60,7 +61,6 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
          "height":16,
          "id":5,
-         "locked":true,
          "name":"Info",
          "opacity":1,
          "properties":[
@@ -121,17 +121,6 @@
          "y":0
         }, 
         {
-         "draworder":"topdown",
-         "id":8,
-         "name":"img",
-         "objects":[],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "data":[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
@@ -167,15 +156,15 @@
  "tileheight":48,
  "tilesets":[
         {
-         "columns":17,
+         "columns":18,
          "firstgid":1,
          "image":"..\/tileset.png",
          "imageheight":48,
-         "imagewidth":816,
+         "imagewidth":864,
          "margin":0,
          "name":"tileset",
          "spacing":0,
-         "tilecount":17,
+         "tilecount":18,
          "tileheight":48,
          "tiles":[
                 {
@@ -245,6 +234,10 @@
                 {
                  "id":16,
                  "type":"ForbiddenBlock"
+                }, 
+                {
+                 "id":17,
+                 "type":"Eraser"
                 }],
          "tilewidth":48
         }],

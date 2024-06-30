@@ -9,6 +9,7 @@ export default class AvailableTilesCounter {
   protected blockTextMap = new Map<string, Phaser.GameObjects.Text>();
   protected totalTiles: number = 0;
   protected selectionRect: Phaser.GameObjects.Rectangle;
+  protected pointerMoveRect: Phaser.GameObjects.Rectangle;
   protected selectedTile: string | null = null;
 
   constructor(
@@ -29,15 +30,27 @@ export default class AvailableTilesCounter {
       0x00ffff,
       0.5
     );
+    this.pointerMoveRect = scene.add.rectangle(
+      0,
+      0,
+      TILE_SIZE + 8,
+      TILE_SIZE + 8,
+      0x00ffff,
+      0.3
+    );
     this.uiLayer.add(this.selectionRect);
+    this.uiLayer.add(this.pointerMoveRect);
     this.uiGroup.add(this.selectionRect);
+    this.uiGroup.add(this.pointerMoveRect);
     this.selectionRect.setVisible(false);
+    this.pointerMoveRect.setVisible(false);
   }
 
   public setupScene() {
     // configure interaction listeners to select a tile
     this.availableBlocksLayer.setInteractive();
     this.availableBlocksLayer.on("pointerdown", this.onPointerClick, this);
+    this.availableBlocksLayer.on("pointermove", this.onPointerMove, this);
 
     // Configure the initial block counts in a map for each tile type:
     (this.availableBlocksLayer.layer.properties || []).forEach((p: any) => {
@@ -66,6 +79,10 @@ export default class AvailableTilesCounter {
         this.uiLayer.add(txtObj);
         this.uiGroup.add(txtObj);
         this.blockTextMap.set(type, txtObj);
+      } else if (type === "Eraser") {
+        const tileRect = new Phaser.Geom.Rectangle();
+        tile.getBounds(undefined, tileRect);
+        lastBlockX = tileRect.x + TILE_SIZE;
       }
     });
 
@@ -87,10 +104,18 @@ export default class AvailableTilesCounter {
       this.selectionRect.setY(clickedTile.y * TILE_SIZE + TILE_SIZE / 2);
       this.selectionRect.setVisible(true);
       this.selectedTile = (<{ type: string }>clickedTile.getTileData())!.type;
-      this.scene.events.emit(
-        EVENTS.tileSelected,
-        (<{ type: string }>clickedTile.getTileData())!.type
-      );
+      this.scene.events.emit(EVENTS.tileSelected, this.selectedTile);
+    }
+  }
+
+  protected onPointerMove(_e: Phaser.Input.Pointer, x: number, y: number) {
+    const blockTile = this.availableBlocksLayer.getTileAtWorldXY(x, y);
+    if (blockTile) {
+      this.pointerMoveRect.setX(blockTile.x * TILE_SIZE + TILE_SIZE / 2);
+      this.pointerMoveRect.setY(blockTile.y * TILE_SIZE + TILE_SIZE / 2);
+      this.pointerMoveRect.setVisible(true);
+    } else {
+      this.pointerMoveRect.setVisible(false);
     }
   }
 
@@ -119,14 +144,35 @@ export default class AvailableTilesCounter {
     return actCounter;
   }
 
+  public increaseTile(tileType: string): number {
+    if (!this.blockCountMap.has(tileType)) return 0;
+
+    let actCounter = this.blockCountMap.get(tileType) || 0;
+    this.increaseTotalTiles();
+    actCounter = actCounter + 1;
+    this.blockCountMap.set(tileType, actCounter);
+    this.blockTextMap.get(tileType)?.setText(`${actCounter}`);
+    return actCounter;
+  }
+
   public decreaseTotalTiles(): number {
     this.totalTiles--;
+    this.updateTotalTileCountText();
+    return this.totalTiles;
+  }
+
+  public increaseTotalTiles(): number {
+    this.totalTiles++;
+    this.updateTotalTileCountText();
+    return this.totalTiles;
+  }
+
+  protected updateTotalTileCountText() {
     this.blockTextMap
       .get("TotalItems")
       ?.setText(`Items left: \n${this.totalTiles}`);
     if (this.totalTiles === 0) {
       this.scene.events.emit(EVENTS.allTilesUsed);
     }
-    return this.totalTiles;
   }
 }

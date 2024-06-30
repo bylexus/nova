@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../../public/assets/levels/level-00.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="tileset" tilewidth="48" tileheight="48" tilecount="17" columns="17">
-  <image source="../../public/assets/tileset.png" width="816" height="48"/>
+ <tileset firstgid="1" name="tileset" tilewidth="48" tileheight="48" tilecount="18" columns="18">
+  <image source="../../public/assets/tileset.png" width="864" height="48"/>
   <tile id="0" type="BlockingBlock"/>
   <tile id="1" type="Cross"/>
   <tile id="2" type="BallMirror"/>
@@ -21,6 +21,7 @@
   <tile id="13" type="TargetRight"/>
   <tile id="14" type="TargetDown"/>
   <tile id="15" type="TargetLeft"/>
+  <tile id="17" type="Eraser"/>
  </tileset>
  <layer id="2" name="Blocks" width="21" height="16">
   <data encoding="csv">
@@ -55,7 +56,7 @@
    <property name="TopRightMirror" type="int" value="5"/>
   </properties>
   <data encoding="csv">
-0,1,0,8,0,3,0,2,0,5,0,4,0,7,0,6,0,0,0,0,0,
+0,1,0,8,0,3,0,2,0,5,0,4,0,7,0,6,0,18,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

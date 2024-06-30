@@ -3,6 +3,8 @@ import Block from "./Block";
 import LaserHead from "./LaserHead";
 
 export default class TimedBlock extends Block {
+  public blockClass = "TimedBlock";
+  
   constructor(scene: Phaser.Scene, x: number, y: number) {
     super(scene, x, y, GAME_IMAGES.timedBlock.key);
   }

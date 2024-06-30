@@ -1,13 +1,5 @@
 import { Scene } from "phaser";
-import {
-  TILE_SIZE,
-  GAME_IMAGES,
-  EVENTS,
-  GAME_TILEMAPS,
-  GAME_SPRITESHEETS,
-  LEVELS,
-  TEXTURE_ATLAS,
-} from "../Constants";
+import { TILE_SIZE, GAME_IMAGES, EVENTS, LEVELS } from "../Constants";
 import HLaser from "../sprites/HLaser";
 import VLaser from "../sprites/VLaser";
 import Laser from "../sprites/Laser";
@@ -53,7 +45,6 @@ export class GameScene extends Scene {
   init() {
     // Reset all previously added assets, listeners et al,
     // to really remove everything from this scene and start from scratch
-    console.log("GameScene init");
     this.events.removeListener(EVENTS.blockHit);
     this.events.removeListener(EVENTS.dirChange);
     this.events.removeListener(EVENTS.laserHit);
@@ -94,26 +85,6 @@ export class GameScene extends Scene {
       this.blockCounter = null;
     }
     this.state = "stopped";
-  }
-
-  preload() {
-    console.log("Preloading Game Assets");
-    Object.values(GAME_IMAGES).forEach((value) => {
-      this.load.image(value.key, value.url);
-    });
-    Object.values(GAME_TILEMAPS).forEach((value) => {
-      this.load.tilemapTiledJSON(value.key, value.url);
-    });
-    Object.values(GAME_SPRITESHEETS).forEach((value) => {
-      this.load.spritesheet(value.key, value.url, {
-        frameWidth: TILE_SIZE,
-        frameHeight: TILE_SIZE,
-      });
-    });
-
-    Object.values(TEXTURE_ATLAS).forEach((value) => {
-      this.load.atlas(value.key, value.textureUrl, value.atlasUrl);
-    });
   }
 
   create(data: { level: { key: string; url: string } }) {
@@ -434,7 +405,8 @@ export class GameScene extends Scene {
   protected addBlock(
     type: string,
     worldX: number,
-    worldY: number
+    worldY: number,
+    playerAdded: boolean = false
   ): Block | null {
     let sprite = null;
     let x = floorToGrid(worldX) + TILE_SIZE / 2;
@@ -494,10 +466,23 @@ export class GameScene extends Scene {
     }
     if (sprite) {
       sprite.configureLaserHeadCollider(this.laserHeads!);
+      sprite.playerAddedBlock = playerAdded; // mark the block as player added
       this.blocks!.add(sprite);
       this.blockLayer!.add(sprite);
     }
     return sprite;
+  }
+
+  protected eraseBlock(block: Block) {
+    // we can only remove blocks set by the player, not level blocks:
+    if (block.playerAddedBlock) {
+      this.blocks!.remove(block, true, true);
+      this.blockLayer!.remove(block);
+      this.blockCounter?.increaseTile(block.blockClass);
+    } else {
+      console.log('cannot erase level-added block');
+    }
+    
   }
 
   protected setupTileSelectOverlay(map: Phaser.Tilemaps.Tilemap) {
@@ -560,13 +545,16 @@ export class GameScene extends Scene {
                   return;
                 }
 
-                if (!this.blockCounter!.selectedTileCount) {
+                if (
+                  this.blockCounter?.selectedTileType !== "Eraser" &&
+                  !this.blockCounter!.selectedTileCount
+                ) {
                   // TODO: BEEP: no placement possible, no blocks left
                   console.log("no more blocks");
                   return;
                 }
 
-                let foundBlock = false;
+                let foundBlock: Block | null = null;
                 for (let block of this.blocks!.getChildren()) {
                   if (
                     block instanceof Block &&
@@ -575,17 +563,21 @@ export class GameScene extends Scene {
                       new Phaser.Geom.Point(e.worldX, e.worldY)
                     )
                   ) {
-                    foundBlock = true;
+                    foundBlock = block;
                     break;
                   }
                 }
                 if (foundBlock) {
-                  // TODO: BEEP: block already placed
-                  console.log("block already placed");
+                  if (this.blockCounter?.selectedTileType === "Eraser") {
+                    this.eraseBlock(foundBlock);
+                  } else {
+                    // TODO: BEEP: block already placed
+                    console.log("block already placed");
+                  }
                 } else {
                   const blockType = this.blockCounter?.selectedTileType!;
                   this.blockCounter?.decreaseTile(blockType);
-                  this.addBlock(blockType, e.worldX, e.worldY);
+                  this.addBlock(blockType, e.worldX, e.worldY, true);
                 }
               }
             );

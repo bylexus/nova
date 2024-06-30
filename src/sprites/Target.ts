@@ -4,6 +4,8 @@ import Block from "./Block";
 import LaserHead from "./LaserHead";
 
 export default class Target extends Block {
+  public blockClass = "Target";
+
   public laserInTarget: boolean = false;
   protected direction: LaserDirection;
   protected shineFx: Phaser.FX.Shine;

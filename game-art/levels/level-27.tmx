@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="../../public/assets/levels/level-21.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" name="tileset" tilewidth="48" tileheight="48" tilecount="17" columns="17">
-  <image source="../../public/assets/tileset.png" width="816" height="48"/>
+ <tileset firstgid="1" name="tileset" tilewidth="48" tileheight="48" tilecount="18" columns="18">
+  <image source="../../public/assets/tileset.png" width="864" height="48"/>
   <tile id="0" type="BlockingBlock"/>
   <tile id="1" type="Cross"/>
   <tile id="2" type="BallMirror"/>
@@ -22,9 +22,10 @@
   <tile id="14" type="TargetDown"/>
   <tile id="15" type="TargetLeft"/>
   <tile id="16" type="ForbiddenBlock"/>
+  <tile id="17" type="Eraser"/>
  </tileset>
- <imagelayer id="9" name="bg" opacity="0.5" offsetx="-1.34366" offsety="95.2359">
-  <image source="../../../../Screenshots/SCR-20240413-pbmc.png" width="960" height="576"/>
+ <imagelayer id="9" name="bg" locked="1" opacity="0.5" offsetx="-1.34366" offsety="95.2359">
+  <image source="../black.png" width="960" height="576"/>
  </imagelayer>
  <layer id="2" name="Blocks" width="21" height="16">
   <data encoding="csv">
@@ -60,7 +61,7 @@
    <property name="TopRightMirror" type="int" value="0"/>
   </properties>
   <data encoding="csv">
-0,1,0,8,0,3,0,2,0,5,0,4,0,7,0,6,0,0,0,0,0,
+0,1,0,8,0,3,0,2,0,5,0,4,0,7,0,6,0,18,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
