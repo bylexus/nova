@@ -33,6 +33,8 @@ export const GAME_IMAGES = {
   laserV: { key: "laser-v", url: "assets/laser-vert-1px.png" },
 
   tileset: { key: "tileset", url: "assets/tileset.png" },
+
+  bg1: { key: "bg-1", url: "assets/star-background-blue-nebula-8.png" },
 };
 
 export const GAME_SPRITESHEETS = {
@@ -124,4 +126,5 @@ export const EVENTS = {
 
 export const SOUNDS = {
   theme1: { key: "theme1", url: "assets/music/nova-song-1.mp3" },
+  boom1: { key: "boom1", url: "assets/boom-nenad_simic-muffled_distant_explosion.mp3" },
 }

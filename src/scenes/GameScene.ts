@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { TILE_SIZE, GAME_IMAGES, EVENTS, LEVELS } from "../Constants";
+import { TILE_SIZE, GAME_IMAGES, EVENTS, LEVELS, SOUNDS } from "../Constants";
 import HLaser from "../sprites/HLaser";
 import VLaser from "../sprites/VLaser";
 import Laser from "../sprites/Laser";
@@ -32,6 +32,7 @@ export class GameScene extends Scene {
   private uiLayer: Phaser.GameObjects.Layer | null = null;
   private blockCounter: AvailableTilesCounter | null = null;
   private state: "stopped" | "running" | "pause" = "stopped";
+  private bgTile: Phaser.GameObjects.TileSprite | null = null;
 
   private bootData: {
     level: { key: string; url: string };
@@ -91,6 +92,22 @@ export class GameScene extends Scene {
     this.bootData = data;
 
     console.log("Main scene created, level: ", this.bootData.level);
+
+    // -----------------------------------------------------------------
+    // Background
+    // -----------------------------------------------------------------
+    const bgWidth = Math.sqrt(
+      this.cameras.main.width * this.cameras.main.width +
+        this.cameras.main.height * this.cameras.main.height
+    );
+    this.bgTile = this.add.tileSprite(
+      this.cameras.main.width / 2,
+      this.cameras.main.height / 2,
+      bgWidth,
+      bgWidth,
+      GAME_IMAGES.bg1.key
+    );
+    this.bgTile.setOrigin(0.5, 0.5);
 
     const map = this.make.tilemap(this.bootData.level);
 
@@ -480,9 +497,8 @@ export class GameScene extends Scene {
       this.blockLayer!.remove(block);
       this.blockCounter?.increaseTile(block.blockClass);
     } else {
-      console.log('cannot erase level-added block');
+      console.log("cannot erase level-added block");
     }
-    
   }
 
   protected setupTileSelectOverlay(map: Phaser.Tilemaps.Tilemap) {
@@ -671,14 +687,24 @@ export class GameScene extends Scene {
         this.scene.launch("AllLevelsDoneScene");
       }
     } else if (allLasersStopped) {
-      this.scene.pause(this);
-      console.log("============= YOU LOOSE !!! =============");
-      this.scene.launch("GameEndScene", {
-        status: GameEndStatus.LOST,
-        restartCallback: () => {
-          this.restartLevel();
-        },
-      });
+      this.sound.play(SOUNDS.boom1.key);
+      this.cameras.main.shake(
+        200,
+        0.01,
+        false,
+        (c: Phaser.Cameras.Scene2D.Camera, progress: number) => {
+          if (progress === 1) {
+            this.scene.pause(this);
+            console.log("============= YOU LOOSE !!! =============");
+            this.scene.launch("GameEndScene", {
+              status: GameEndStatus.LOST,
+              restartCallback: () => {
+                this.restartLevel();
+              },
+            });
+          }
+        }
+      );
     }
   }
 
@@ -689,5 +715,10 @@ export class GameScene extends Scene {
   protected stopHead(laserHead: LaserHead) {
     laserHead.setActive(false);
     laserHead.stopMoving();
+  }
+
+  public update(time: number, delta: number) {
+    this.bgTile?.setRotation(time * 0.00001);
+    this.bgTile?.setTilePosition(time * 0.005, time * 0.001 * -1);
   }
 }

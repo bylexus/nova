@@ -92,4 +92,14 @@ YouTube Walkthrough of the original:
 https://www.youtube.com/watch?v=YbfMREGx-1A
 
 
+## Attributions
+
+Game arts from
+
+- self-made (&copy; alex@alexi.ch)
+- https://opengameart.org/:
+  - Screaming Brain Studios: Space backgrounds
+  - NenadSimic - Muffled Distant Explosion.wav
+
+
 

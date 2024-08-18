@@ -35,7 +35,9 @@ export class PreloaderScene extends Scene {
       this.load.atlas(value.key, value.textureUrl, value.atlasUrl);
     });
 
-    this.load.audio(SOUNDS.theme1.key, SOUNDS.theme1.url);
+    Object.values(SOUNDS).forEach((value) => {
+      this.load.audio(value.key, value.url);
+    });
   }
 
   create() {
